@@ -10,7 +10,7 @@ const Dex = ({onBack, setPage, setPokemon}) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5050/get_dex');
+        const response = await fetch('https://fauna-dex-3f13cfbb2cab.herokuapp.com/get_dex');
         const result = await response.json();
         if (result.status === 'success') {
           setItems(result.data);
@@ -36,7 +36,7 @@ const Dex = ({onBack, setPage, setPokemon}) => {
         {items.map((item, index) => (
           <DexItem
             key={index}
-            image={"http://127.0.0.1:5050/" + item.image_path}
+            image={"https://fauna-dex-3f13cfbb2cab.herokuapp.com/" + item.image_path}
             name={item.name}
             onClick={() => {
               handleItemClick(item.name)
