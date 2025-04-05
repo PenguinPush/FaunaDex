@@ -1,8 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import './Camera.css';
+import BottomImagePanel from './BottomImagePanel';
+import dexbutton from "./assets/dexbutton.png"
 
-const Camera = () => {
+
+const Camera = ({setPage}) => {
   const videoRef = useRef(null);
+  const [isPicturing, setIsPicturing] = useState(false);
+  const canvasRef = useRef(null); // hidden canvas for capturing image
+
 
   useEffect(() => {
     const startCamera = async () => {
@@ -26,7 +32,47 @@ const Camera = () => {
     };
   }, []);
 
+  const captureAndSend = async () => {
+    const video = videoRef.current;
+    const canvas = canvasRef.current;
+
+    if (!video || !canvas) return;
+
+    // Set canvas dimensions to match video
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+
+    // Draw the current video frame on the canvas
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Convert to base64 or blob
+    const imageBlob = await new Promise(resolve =>
+      canvas.toBlob(resolve, 'image/jpeg')
+    );
+
+    // Send to backend (example using fetch + FormData)
+    const formData = new FormData();
+    formData.append('image', imageBlob, 'snapshot.jpg');
+
+    try {
+      const response = await fetch('http://localhost:5000/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        console.log('Image uploaded successfully');
+      } else {
+        console.error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Error sending image to backend:', error);
+    }
+  };
+
   return (
+    <>
     <div className="half-screen-camera">
       <video
         ref={videoRef}
@@ -35,6 +81,11 @@ const Camera = () => {
         muted
       />
     </div>
+    <canvas ref={canvasRef} style={{ display: 'none' }} />
+
+    <BottomImagePanel takeImage={captureAndSend} src={dexbutton} onClick={()=>{setPage("dex")}} />
+    </>
+
   );
 };
 

@@ -17,4 +17,20 @@
     position: absolute;
     bottom: 0;
   }
+  .middle-image {
+    height: auto;
+    max-height: 75%;
+    width: auto;
+    max-width: 75%;
+    object-fit: contain;
+    position: absolute;
+    bottom: 15vh;
+  }
   
+
+.red-rectangle {
+    height: 50%;
+    background-color: red;
+    color: red;
+    width: 100%;
+}
