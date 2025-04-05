@@ -69,10 +69,12 @@ const Camera = ({setPage}) => {
     await captureAndSend(imageBlob);
     setCurrentlyWaiting(false);    
     setCatchSuccess(true);
+  }
+
+  function playVideo(){
     if (videoRef.current) {
       videoRef.current.play();
     }
-
   }
 
   const captureAndSend = async (imageBlob) => {
@@ -113,7 +115,7 @@ const Camera = ({setPage}) => {
 
     <BottomImagePanel takeImage={ ()=>{
       capture();
-    }} currentlyWaiting={currentlyWaiting} src={dexbutton} setCatchSuccess={setCatchSuccess} setCatchFailed={setCatchFailed} catchFailed={catchFailed} catchSuccess={catchSuccess} currentlyCatching={currentlyCatching} setPage={setPage} onClick={()=>{setPage("dex")}} />
+    }} currentlyWaiting={currentlyWaiting} playVideo={playVideo} src={dexbutton} setCatchSuccess={setCatchSuccess} setCatchFailed={setCatchFailed} catchFailed={catchFailed} catchSuccess={catchSuccess} currentlyCatching={currentlyCatching} setPage={setPage} onClick={()=>{setPage("dex")}} />
     </>
 
   );

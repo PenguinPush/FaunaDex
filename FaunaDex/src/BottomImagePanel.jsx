@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './BottomImagePanel.css';
 import catchButton from "./assets/catch_button.png";
 
-const BottomImagePanel = ({ src, currentlyWaiting, setCatchSuccess, setCatchFailed, catchFailed, catchSuccess, setPage, onClick, takeImage, currentlyCatching }) => {
+const BottomImagePanel = ({ src, playVideo, currentlyWaiting, setCatchSuccess, setCatchFailed, catchFailed, catchSuccess, setPage, onClick, takeImage, currentlyCatching }) => {
   return (
     <>
       <div className="bottom-image-panel">
@@ -12,12 +12,12 @@ const BottomImagePanel = ({ src, currentlyWaiting, setCatchSuccess, setCatchFail
           </p>
         ) :  
         currentlyWaiting ? <p>Waiting for backend server...</p> : catchFailed ? (
-          <p onClick={() => { setCatchSuccess(false); setCatchFailed(false); }}>
-            Catch failed! There is no animal in the picture
+          <p onClick={() => { setCatchSuccess(false); setCatchFailed(false); playVideo()}}>
+            Catch failed! There is no animal in the picture. Click to continue;
           </p>
         ) : catchSuccess ? (
-          <p onClick={() => { setPage("dex"); setCatchSuccess(false); setCatchFailed(false); }}>
-            Catch successful! Click to see it in your dex
+          <p onClick={() => { setPage("dex"); setCatchSuccess(false); setCatchFailed(false); playVideo()}}>
+            Catch successful! Click to see it in your dex.
           </p>
         ) : (
           <>
