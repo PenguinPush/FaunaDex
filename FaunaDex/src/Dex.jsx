@@ -6,8 +6,21 @@ const Dex = ({ onBack, setPage, setPokemon }) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    // Simulating a test data fetch
-    const testing = {
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await fetch('https://fauna-dex-3f13cfbb2cab.herokuapp.com/get_dex');
+    //     const result = await response.json();
+    //     console.log(response);
+    //     if (result.status === 'success') {
+    //       setItems(result.data);
+    //     } else {
+    //       console.error('Failed to fetch data:', result.message);
+    //     }
+    //   } catch (error) {
+    //     console.error('Error fetching data:', error);
+    //   }
+    // }
+    const li = {
       "data": [
         {
           "_id": "67f16c09beeab7c5ea372cf7",
@@ -47,22 +60,24 @@ const Dex = ({ onBack, setPage, setPokemon }) => {
         }
       ],
       "status": "success"
-    };
-    setItems(testing.data);
-  }, []);
+    }
+    setItems(li.data);
+    }
+  , [])
 
   const handleItemClick = (name) => {
     setPage("description");
   };
 
   return (
+    <>
+    <button className="back-button" onClick={onBack}>← Back</button>
     <div className="dex-container">
-      <button className="back-button" onClick={onBack}>← Back</button>
       <div className="dex-grid">
         {items.map((item, index) => (
           <DexItem
             key={index}
-            image={"http://127.0.0.1:5050/" + item.image_path}
+            image={"https://fauna-dex-3f13cfbb2cab.herokuapp.com/" + item.image_path}
             name={item.name}
             onClick={() => {
               handleItemClick(item.name);
@@ -72,6 +87,7 @@ const Dex = ({ onBack, setPage, setPokemon }) => {
         ))}
       </div>
     </div>
+     </>
   );
 };
 
