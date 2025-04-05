@@ -6,6 +6,7 @@ from animal import Animal
 from mongodb import database_update, database_fetch
 from cloud_storage import upload_image, fetch_image
 from cropper import crop_to_animal
+import traceback
 
 
 app = Flask(__name__)
@@ -62,7 +63,7 @@ def upload():
         response = jsonify({'message': 'Image received', 'filename': filename,
                             'name':animal_instance.species, 'is_animal':is_animal}), 200
     except Exception as e:
-        print(str(e))
+        print(traceback.format_exc())
         response = jsonify({'error': str(e)}), 500
 
     return response
