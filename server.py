@@ -44,27 +44,23 @@ def upload():
     name, ext = os.path.splitext(filename)
     filename_full = f"{name}_Full{ext}"
 
-    try:
-        image.save(save_path)
-        save_path_full = crop_to_animal(save_path)
-        upload_image(save_path, filename)
-        print("a")
-        print(save_path_full, filename_full)
-        upload_image(save_path_full, filename_full)
-        print("b")
+    image.save(save_path)
+    save_path_full = crop_to_animal(save_path)
+    upload_image(save_path, filename)
+    print("a")
+    print(save_path_full, filename_full)
+    upload_image(save_path_full, filename_full)
+    print("b")
 
-        animal_instance = Animal(save_path)
+    animal_instance = Animal(save_path)
 
-        print(animal_instance.species)
-        is_animal = animal_instance.species != "NOT AN ANIMAL"
-        if is_animal:
-            print(database_update(animal_instance, save_path))
+    print(animal_instance.species)
+    is_animal = animal_instance.species != "NOT AN ANIMAL"
+    if is_animal:
+        print(database_update(animal_instance, save_path))
 
-        response = jsonify({'message': 'Image received', 'filename': filename,
-                            'name':animal_instance.species, 'is_animal':is_animal}), 200
-    except Exception as e:
-        print(traceback.format_exc())
-        response = jsonify({'error': str(e)}), 500
+    response = jsonify({'message': 'Image received', 'filename': filename,
+                        'name':animal_instance.species, 'is_animal':is_animal}), 200
 
     return response
 
