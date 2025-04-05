@@ -125,7 +125,7 @@ def crop_to_animal(image_path, margin_ratio=0.1):
     cropped_image.save(image_path)
     print(f"Cropped image replaced at {image_path}")
 
-    return cropped_image
+    return full_version_path
 
 
 if __name__ == '__main__':

@@ -39,17 +39,16 @@ def upload():
     # Optional: create a unique filename
     timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
     filename = f"{timestamp}_{image.filename}"
-    name, ext = os.path.splitext(filename)
-    filename_full = os.path.join(filename, f"{name}_Full{ext}")
     save_path = os.path.join(UPLOAD_FOLDER, filename)
-    save_path_full = os.path.join(UPLOAD_FOLDER, filename_full)
+    name, ext = os.path.splitext(filename)
+    filename_full = f"{name}_Full{ext}"
 
     try:
         image.save(save_path)
-        crop_to_animal(save_path)
+        save_path_full = crop_to_animal(save_path)
         upload_image(save_path, filename)
         print("a")
-        print(save_path_full)
+        print(save_path_full, filename_full)
         upload_image(save_path_full, filename_full)
         print("b")
 
