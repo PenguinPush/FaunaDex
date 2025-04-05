@@ -1,32 +1,55 @@
+# image_recognizer.py
 from googleapiclient import discovery
 import base64
 from dotenv import load_dotenv
 import os
 
+# Load environment variables from .env file.
 load_dotenv()
-GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 
-# Build the service object.
-service = discovery.build('vision', 'v1', developerKey=GOOGLE_API_KEY)
 
-# Path to your image.
-image_path = '/Users/edwardwang/Downloads/husky.webp'
-with open(image_path, 'rb') as image_file:
-    # Read and encode image to base64.
-    image_content = base64.b64encode(image_file.read()).decode('UTF-8')
+class ImageRecognizer:
+    def __init__(self):
+        """Initializes the Vision API service using an API key from the environment."""
+        self.api_key = os.environ.get("GOOGLE_API_KEY")
+        if not self.api_key:
+            raise ValueError("GOOGLE_API_KEY not found in environment variables.")
+        self.service = discovery.build('vision', 'v1', developerKey=self.api_key)
 
-# Prepare the request body.
-request_body = {
-    'requests': [{
-        'image': {'content': image_content},
-        'features': [{'type': 'LABEL_DETECTION'}]
-    }]
-}
+    def get_labels(self, image_path):
+        """
+        Recognizes labels in the provided image using Google Cloud Vision API.
 
-# Call the Vision API.
-response = service.images().annotate(body=request_body).execute()
+        Args:
+            image_path (str): The local file path to the image.
 
-# Process and print the labels.
-print('Labels:')
-for annotation in response['responses'][0].get('labelAnnotations', []):
-    print(annotation['description'])
+        Returns:
+            list: A list of label descriptions returned by the API.
+        """
+        with open(image_path, 'rb') as image_file:
+            # Read and encode the image to base64.
+            image_content = base64.b64encode(image_file.read()).decode('UTF-8')
+
+        # Prepare the request body for the Vision API.
+        request_body = {
+            'requests': [{
+                'image': {'content': image_content},
+                'features': [{'type': 'LABEL_DETECTION'}]
+            }]
+        }
+
+        # Call the Vision API.
+        response = self.service.images().annotate(body=request_body).execute()
+        labels = [annotation['description']
+                  for annotation in response['responses'][0].get('labelAnnotations', [])]
+        return labels
+
+
+if __name__ == '__main__':
+    # Example usage if running this file directly.
+    recognizer = ImageRecognizer()
+    image_path = '/Users/edwardwang/Downloads/husky.webp'
+    labels = recognizer.get_labels(image_path)
+    print('Labels:')
+    for label in labels:
+        print(label)
