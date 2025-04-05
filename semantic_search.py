@@ -26,7 +26,7 @@ pd.set_option('display.width', None)
 
 class Semantic_Search:
     def __init__(self, dataset_name="PenguinPush/animals-large", split="train",
-                 dataset_limit=2706, annoy_index_path='embeds/embeds-openai-large-gen3.ann'):
+                 dataset_limit=3159, annoy_index_path='embeds/embeds-openai-large-gen3.ann'):
         """
         Initializes the classifier by loading the dataset, building the Annoy index,
         and setting up the image recognizer.
@@ -106,7 +106,7 @@ class Semantic_Search:
 if __name__ == '__main__':
     # Example usage:
     classifier = Semantic_Search()
-    image_path = '/Users/edwardwang/Downloads/man.png'  # Update this path as needed
+    image_path = 'C:\Users\icyzm\Downloads\6414f9584dea1.image.jpg'  # Update this path as needed
 
     query, results, similar_item_ids = classifier.classify_image(image_path)
 
