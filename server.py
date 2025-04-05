@@ -32,8 +32,7 @@ def upload():
     except Exception as e:
         response = jsonify({'error': str(e)}), 500
     
-    response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5050)
