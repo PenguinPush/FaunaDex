@@ -4,6 +4,7 @@ from datetime import datetime
 from flask_cors import CORS
 from animal import Animal
 from mongodb import database_update, database_fetch
+from cloud_storage import upload_image, fetch_image
 
 app = Flask(__name__)
 CORS(app)
@@ -16,6 +17,9 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 @app.route('/uploads/<filename>', methods=['GET'])
 def get_image(filename):
     image_path = os.path.join('uploads', filename)  # adjust path as needed
+
+    if not os.path.exists(image_path):
+        fetch_image(filename)  # Fetch the image from cloud storage
 
     if not os.path.exists(image_path):
         return {"error": "File not found"}, 404
