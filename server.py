@@ -62,6 +62,7 @@ def upload():
         response = jsonify({'message': 'Image received', 'filename': filename,
                             'name':animal_instance.species, 'is_animal':is_animal}), 200
     except Exception as e:
+        print(str(e))
         response = jsonify({'error': str(e)}), 500
 
     return response
