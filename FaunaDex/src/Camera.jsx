@@ -36,6 +36,7 @@ const Camera = ({setPage}) => {
         z: accelerometer.z
       });
     })
+    accelerometer.start();
 
     return new Promise((resolve) => {
       var checkInterval = setInterval(()=>{
