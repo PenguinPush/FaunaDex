@@ -12,6 +12,7 @@ CORS(app)
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+
 @app.route('/image/<filename>', methods=['GET'])
 def get_image(filename):
     image_path = os.path.join('uploads', filename)  # adjust path as needed
@@ -39,17 +40,19 @@ def upload():
 
     try:
         image.save(save_path)
-
         animal_instance = Animal(save_path)
-        print(animal_instance.species)
-        database_update(animal_instance, save_path)
-        print("database successfully upated")
 
-        response = jsonify({'message': 'Image received', 'filename': filename}), 200
+        print(animal_instance.species)
+        if animal_instance.species != "NOT AN ANIMAL":
+            print(database_update(animal_instance, save_path))
+
+        response = jsonify({'message': 'Image received', 'filename': filename,
+                            'name':animal_instance.species}), 200
     except Exception as e:
         response = jsonify({'error': str(e)}), 500
-    
+
     return response
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5050)

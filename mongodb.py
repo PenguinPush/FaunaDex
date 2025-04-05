@@ -3,6 +3,7 @@ from bson import ObjectId
 from datetime import datetime
 import os
 from dotenv import load_dotenv
+from json import loads
 
 load_dotenv()
 
@@ -18,6 +19,7 @@ def database_update(animal_instance, image_path):
     try:
         existing_animal = collection.find_one({"name": animal_instance.species})
         new = False
+        type_data = loads(animal_instance.get_type())
 
         if existing_animal:
             collection.update_one(
@@ -30,12 +32,12 @@ def database_update(animal_instance, image_path):
                 "name": animal_instance.species,
                 "description": animal_instance.get_species_info(),
                 "times_caught": 0,
-                "image_path": animal_instance.image_path,
+                "image_path": image_path,
                 "image_path_nobg": image_path,
                 "first_caught_time": int(datetime.utcnow().timestamp()),
                 "first_caught_city": "Oakville",
-                "type_1": animal_instance.get_type().get("type_1", "none"),
-                "type_2": animal_instance.get_type().get("type_2", "none")
+                "type_1": type_data["type_1"],
+                "type_2": type_data["type_2"]
             }
             collection.insert_one(new_animal)
 
