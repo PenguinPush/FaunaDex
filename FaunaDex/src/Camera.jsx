@@ -7,6 +7,8 @@ import dexbutton from "./assets/dexbutton.png"
 const Camera = ({setPage}) => {
   const videoRef = useRef(null);
   const [isPicturing, setIsPicturing] = useState(false);
+  const [currentlyCatching, setCurrentlyCatching] = useState(false);
+
   const canvasRef = useRef(null); // hidden canvas for capturing image
 
 
@@ -32,7 +34,7 @@ const Camera = ({setPage}) => {
     };
   }, []);
 
-  const captureAndSend = async () => {
+  const capture = async () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
 
@@ -50,7 +52,17 @@ const Camera = ({setPage}) => {
     const imageBlob = await new Promise(resolve =>
       canvas.toBlob(resolve, 'image/jpeg')
     );
+    setCurrentlyCatching(true);
 
+    // Call gyroscope function before doing this
+    await captureAndSend(imageBlob);
+
+    // setCurrentlyCatching(false);
+
+
+  }
+
+  const captureAndSend = async (imageBlob) => {
     // Send to backend (example using fetch + FormData)
     const formData = new FormData();
     formData.append('image', imageBlob, 'snapshot.jpg');
@@ -83,7 +95,9 @@ const Camera = ({setPage}) => {
     </div>
     <canvas ref={canvasRef} style={{ display: 'none' }} />
 
-    <BottomImagePanel takeImage={captureAndSend} src={dexbutton} onClick={()=>{setPage("dex")}} />
+    <BottomImagePanel takeImage={ ()=>{
+      capture();
+    }} src={dexbutton} currentlyCatching={currentlyCatching} onClick={()=>{setPage("dex")}} />
     </>
 
   );
