@@ -12,10 +12,46 @@ const Camera = ({setPage}) => {
   const [currentlyWaiting, setCurrentlyWaiting] = useState(false);
   const [catchFailed, setCatchFailed] = useState(false);
   const [animalCaught, setAnimalCaught] = useState("DEFAULT");
-
+  const [accel, setAccel] = useState({ x: null, y: null, z: null });
 
   const canvasRef = useRef(null); // hidden canvas for capturing image
 
+  // let gyroscope = new Gyroscope({ frequency: 60 });
+
+  // gyroscope.addEventListener("reading", (e) => {
+  //   console.log(`Angular velocity along the X-axis ${gyroscope.x}`);
+  //   console.log(`Angular velocity along the Y-axis ${gyroscope.y}`);
+  //   console.log(`Angular velocity along the Z-axis ${gyroscope.z}`);
+  // });
+
+  // gyroscope.start();
+
+  function waitForGyroscope() {
+    const accelerometer = new Accelerometer({ frequency: 60 });
+    if (accelerometer == null){
+      return;
+    }
+    console.log(accelerometer);
+    var accelListener = accelerometer.addEventListener('reading', () => {
+      setAccel({
+        x: accelerometer.x,
+        y: accelerometer.y,
+        z: accelerometer.z
+      });
+    })
+    accelerometer.start();
+
+    return new Promise((resolve) => {
+      var checkInterval = setInterval(()=>{
+        // console.log("checking accelerometer");
+        if (!accelerometer.activated || (accelerometer.x + accelerometer.y) > 10){
+          clearInterval(checkInterval);
+          removeEventListener(accelerometer, accelListener);
+          resolve();
+        }
+      }, 100)
+    });
+  }
 
   useEffect(() => {
     const startCamera = async () => {
@@ -64,6 +100,8 @@ const Camera = ({setPage}) => {
     }
 
     // Call gyroscope function before doing this
+    await waitForGyroscope();
+
     setCurrentlyWaiting(true);
     setCurrentlyCatching(false);
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Description.css';
 
 const Description = ({ name, title, timesCaught, description, image, onBack }) => {
@@ -8,14 +8,22 @@ const Description = ({ name, title, timesCaught, description, image, onBack }) =
 
       <div className="pokemon-description">
         <h2 className="pokemon-name">{name}</h2>
-        <img src={image} alt={name} className="pokemon-image" />
-        <div className="pokemon-info">
+        <div className="background-rectangle">
           
-          <p className="pokemon-title">{title}</p>
-          <p className="pokemon-caught">Caught: {timesCaught} time{timesCaught !== 1 ? 's' : ''}</p>
-          <p className="pokemon-title">{description}</p>
-
+          <img src={image} alt={name} className="background-image" />
+        
         </div>
+        <div className="pokemon-caught-position">
+          Caught: {timesCaught} time{timesCaught !== 1 ? 's' : ''}
+        </div>
+        <div className="Lgray-rectangle"></div>
+        <div className="gray-rectangle"></div>
+        
+        <div className="pokemon-info">
+          <p className="pokemon-title">{title}</p>
+          <p className="pokemon-title">{description}</p>
+        </div>
+        
       </div>
     </div>
   );
