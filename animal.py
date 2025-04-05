@@ -12,6 +12,8 @@ OpenAI.api_key = os.environ.get("OPENAI_API_KEY")
 OpenAI.organization = os.environ.get("OPENAI_ORG")
 DISTANCE_CUTOFF = 1.1
 
+openai.requestssession = requests.Session()
+openai.requestssession.verify = False  # disables SSL check
 
 class Animal:
     def __init__(self, image_path: str):
