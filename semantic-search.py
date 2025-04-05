@@ -28,13 +28,12 @@ search_index.load('embeds/embeds-openai-large-gen3.ann')
 
 query = input("Input: ")
 
-# Get the query's embedding
-openai_output = openai.Embedding.create(
+openai_output = openai.embeddings.create(
     input=query,
-    model="text-embedding-3-small"
+    model="text-embedding-3-large"
 )
 
-query_embed = openai_output["data"][0]["embedding"]
+query_embed = openai_output.data[0].embedding
 
 # Retrieve the nearest neighbors
 similar_item_ids = search_index.get_nns_by_vector(query_embed, 10,
