@@ -63,8 +63,7 @@ class Animal:
                 model="gpt-4o",
                 input= prompt,
                 max_output_tokens=100,
-                temperature=1,
-                verify=False
+                temperature=1
             )
             description = response.output_text.strip()
             return description

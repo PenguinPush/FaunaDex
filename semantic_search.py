@@ -53,8 +53,7 @@ class Semantic_Search:
         """
         openai_output = openai.embeddings.create(
             input=query,
-            model="text-embedding-3-large",
-            verify=False
+            model="text-embedding-3-large"
         )
         return openai_output.data[0].embedding
 
