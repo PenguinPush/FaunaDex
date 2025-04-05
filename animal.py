@@ -4,7 +4,6 @@ from openai import OpenAI
 from semantic_search import Semantic_Search
 import requests
 import os
-from openai import OpenAI
 
 load_dotenv()
 
@@ -50,13 +49,13 @@ class Animal:
             "highlighting its main characteristics and habitats. If your output is too long, you lose 10,000 dollars and your mom dies"
         )
         try:
-            from openai import OpenAI
             client = OpenAI()
 
             response = client.responses.create(
                 model="gpt-4o",
                 input= prompt,
-                max_output_tokens=100
+                max_output_tokens=100,
+                temperature=1
             )
             description = response.output_text.strip()
             return description
@@ -64,7 +63,84 @@ class Animal:
             print("Error generating species description:", e)
             return "Description not available."
 
+    def get_type(self):
+        client = OpenAI()
 
+        response = client.responses.create(
+            model="gpt-4o",
+            input=self.species,
+            text={
+                "format": {
+                    "type": "json_schema",
+                    "name": "pokemon_typing_for_real_animals",
+                    "strict": True,
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "type_1": {
+                                "type": "string",
+                                "enum": [
+                                    "Normal",
+                                    "Fire",
+                                    "Water",
+                                    "Grass",
+                                    "Electric",
+                                    "Ice",
+                                    "Fighting",
+                                    "Poison",
+                                    "Ground",
+                                    "Flying",
+                                    "Psychic",
+                                    "Bug",
+                                    "Rock",
+                                    "Ghost",
+                                    "Dragon",
+                                    "Dark",
+                                    "Steel",
+                                    "Fairy"
+                                ]
+                            },
+                            "type_2": {
+                                "type": "string",
+                                "enum": [
+                                    "",
+                                    "Normal",
+                                    "Fire",
+                                    "Water",
+                                    "Grass",
+                                    "Electric",
+                                    "Ice",
+                                    "Fighting",
+                                    "Poison",
+                                    "Ground",
+                                    "Flying",
+                                    "Psychic",
+                                    "Bug",
+                                    "Rock",
+                                    "Ghost",
+                                    "Dragon",
+                                    "Dark",
+                                    "Steel",
+                                    "Fairy"
+                                ]
+                            }
+                        },
+                        "additionalProperties": False,
+                        "required": [
+                            "type_1",
+                            "type_2"
+                        ]
+                    }
+                }
+            },
+            reasoning={},
+            tools=[],
+            temperature=1,
+            max_output_tokens=2048,
+            top_p=1,
+            store=True
+        )
+        return response.output_text
 
     def __str__(self):
         return f"Animal(species={self.species}, image_path={self.image_path})"
@@ -72,7 +148,8 @@ class Animal:
 
 if __name__ == '__main__':
     # Example usage:
-    test_image = 'C:/Users/icyzm/Downloads/Bird-2-scaled.jpeg'   # Update with the actual image path
+    test_image = '/Users/edwardwang/Downloads/cat.jpeg'   # Update with the actual image path
     animal_instance = Animal(test_image)
     print(animal_instance.species)
+    print(animal_instance.get_type())
     print(animal_instance.get_species_info())
