@@ -6,6 +6,8 @@
     justify-content: flex-end; /* Push image to bottom */
     align-items: center;
     background-color: transparent; /* or any background you like */
+    position: absolute;
+    bottom: 0px;
   }
   
   .bottom-image {
@@ -33,4 +35,16 @@
     background-color: red;
     color: red;
     width: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.info-text {
+  font-size: 25px;
+  padding-left: 35px;
+  padding-right: 35px;
+  text-align: center;
+  position: absolute;
+  top: 12.5vh;
+
 }

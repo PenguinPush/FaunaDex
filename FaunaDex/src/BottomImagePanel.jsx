@@ -7,17 +7,17 @@ const BottomImagePanel = ({ animalText, src, playVideo, currentlyWaiting, setCat
     <>
       <div className="bottom-image-panel">
         {currentlyCatching ? (
-          <p className="fade-message">
+          <p className="info-text">
             Swing your phone FAST to catch!
           </p>
         ) :  
-        currentlyWaiting ? <p>Waiting for backend server...</p> : catchFailed ? (
-          <p onClick={() => { setCatchSuccess(false); setCatchFailed(false); playVideo()}}>
-            Catch failed! There is no animal in the picture. Click to continue;
+        currentlyWaiting ? <p className="info-text">Waiting for backend server...</p> : catchFailed ? (
+          <p className="info-text" onClick={() => { setCatchSuccess(false); setCatchFailed(false); playVideo()}}>
+            Catch failed! There is no animal in the picture. Click here to continue.
           </p>
         ) : catchSuccess ? (
-          <p onClick={() => { setPage("dex"); setCatchSuccess(false); setCatchFailed(false); playVideo()}}>
-            Catch successful: {animalText}! Click to see it in your dex.
+          <p className="info-text" onClick={() => { setPage("dex"); setCatchSuccess(false); setCatchFailed(false); playVideo()}}>
+            Success! {animalText} has been caught. Click here to see it in your dex.
           </p>
         ) : (
           <>
