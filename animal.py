@@ -1,13 +1,3 @@
-# animal.py
-"""
-Animal Class Module
-
-This module defines the Animal class that integrates with the semantic search (AnimalClassifier)
-to automatically determine the species from an image. It stores the image path and species
-and provides a template method to retrieve additional information on the species.
-"""
-
-# Import the AnimalClassifier from semantic_search.py (formerly animal_classifier.py)
 from semantic_search import Semantic_Search  # Adjust the import as necessary
 
 
