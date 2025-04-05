@@ -82,10 +82,6 @@ def crop_to_animal(image_path, margin_ratio=0.1):
     animal_objects = [obj for obj in objects if is_animal(obj.get('name', ''))]
     if not animal_objects:
         print("No animal detected in the image.")
-        full_version_path = os.path.join(directory, f"{name}_Full{ext}")
-        original_image = Image.open(image_path)
-        original_image.save(full_version_path)
-        print(f"Saved full image as {full_version_path}")
         return None
 
     # Select the animal object with the highest confidence score.
