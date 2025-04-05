@@ -53,12 +53,18 @@ const Camera = ({setPage}) => {
       canvas.toBlob(resolve, 'image/jpeg')
     );
     setCurrentlyCatching(true);
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+
 
     // Call gyroscope function before doing this
     await captureAndSend(imageBlob);
-
-    // setCurrentlyCatching(false);
-
+    
+    setCurrentlyCatching(false);
+    if (videoRef.current) {
+      videoRef.current.play();
+    }
 
   }
 
