@@ -4,13 +4,16 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Camera from './Camera'
 import Dex from './Dex'
+import Description from './Description'
 
 function App() {
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState("description")
 
   return (
     <>
-      <Dex />
+      {page == "description" ? <Description onBack={()=>{setPage("dex")}} name="Squirtle" description="Hello world!" timesCaught={1} image="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png"/> : null}
+      {page == "dex" ? <Dex onBack={()=>{setPage("camera")}} /> : null}
+      {page == "camera" ? <Camera /> : null}
     </>
   )
 }

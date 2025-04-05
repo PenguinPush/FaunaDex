@@ -2,7 +2,7 @@ import React from 'react';
 import DexItem from './DexItem';
 import './Dex.css';
 
-const Dex = () => {
+const Dex = (onBack) => {
   const items = [
     { name: 'Bulbasaur', image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png' },
     { name: 'Charmander', image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png' },
@@ -17,17 +17,13 @@ const Dex = () => {
     // Add more items as needed
   ];
 
-  const handleBack = () => {
-    console.log('Back button clicked');
-  };
-
   const handleItemClick = (name) => {
     console.log(`Clicked on ${name}`);
   };
 
   return (
     <div className="dex-container">
-      <button className="back-button" onClick={handleBack}>← Back</button>
+      <button className="back-button" onClick={onBack}>← Back</button>
       <div className="dex-grid">
         {items.map((item, index) => (
           <DexItem

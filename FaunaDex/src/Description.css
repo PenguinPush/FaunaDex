@@ -1,0 +1,58 @@
+.pokemon-description-page {
+    width: 100vw;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    background-color: #f4f4f4;
+  }
+  
+  .back-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+  }
+  
+  .pokemon-description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    height: 100%;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pokemon-image {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 1rem;
+  }
+  
+  .pokemon-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .pokemon-name {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  
+  .pokemon-title {
+    font-size: 1rem;
+    color: #666;
+  }
+  
+  .pokemon-caught {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
