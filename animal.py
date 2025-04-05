@@ -9,7 +9,7 @@ load_dotenv()
 
 OpenAI.api_key = os.environ.get("OPENAI_API_KEY")
 OpenAI.organization = os.environ.get("OPENAI_ORG")
-DISTANCE_CUTOFF = 1.0
+DISTANCE_CUTOFF = 1.1
 
 class Animal:
     def __init__(self, image_path: str):

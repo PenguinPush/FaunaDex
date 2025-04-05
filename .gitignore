@@ -29,3 +29,4 @@ dist-ssr
 /.venv/
 /.idea/
 __pycache__
+/uploads/

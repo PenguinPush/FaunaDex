@@ -9,7 +9,9 @@ const Camera = ({setPage}) => {
   const [isPicturing, setIsPicturing] = useState(false);
   const [currentlyCatching, setCurrentlyCatching] = useState(false);
   const [catchSuccess, setCatchSuccess] = useState(false);
+  const [currentlyWaiting, setCurrentlyWaiting] = useState(false);
   const [catchFailed, setCatchFailed] = useState(false);
+  const [animalCaught, setAnimalCaught] = useState("DEFAULT");
 
 
   const canvasRef = useRef(null); // hidden canvas for capturing image
@@ -61,16 +63,19 @@ const Camera = ({setPage}) => {
       videoRef.current.pause();
     }
 
-
     // Call gyroscope function before doing this
-    await captureAndSend(imageBlob);
-    
+    setCurrentlyWaiting(true);
     setCurrentlyCatching(false);
+
+    await captureAndSend(imageBlob);
+    setCurrentlyWaiting(false);    
     setCatchSuccess(true);
+  }
+
+  function playVideo(){
     if (videoRef.current) {
       videoRef.current.play();
     }
-
   }
 
   const captureAndSend = async (imageBlob) => {
@@ -85,8 +90,16 @@ const Camera = ({setPage}) => {
       });
 
       if (response.ok) {
+        const data = await response.json()
+        console.log(data.is_animal)
         console.log('Image uploaded successfully');
-        setCatchFailed(true); // TODO: do this if the backend returns that its bad
+        if (!data.is_animal){
+          setCatchFailed(true); // TODO: do this if the backend returns that its bad
+        }
+        else {
+          setAnimalCaught(data.name);
+        }
+      
 
       } else {
         console.error('Upload failed');
@@ -111,7 +124,7 @@ const Camera = ({setPage}) => {
 
     <BottomImagePanel takeImage={ ()=>{
       capture();
-    }} src={dexbutton} setCatchSuccess={setCatchSuccess} setCatchFailed={setCatchFailed} catchFailed={catchFailed} catchSuccess={catchSuccess} currentlyCatching={currentlyCatching} setPage={setPage} onClick={()=>{setPage("dex")}} />
+    }} currentlyWaiting={currentlyWaiting} animalText={animalCaught} playVideo={playVideo} src={dexbutton} setCatchSuccess={setCatchSuccess} setCatchFailed={setCatchFailed} catchFailed={catchFailed} catchSuccess={catchSuccess} currentlyCatching={currentlyCatching} setPage={setPage} onClick={()=>{setPage("dex")}} />
     </>
 
   );

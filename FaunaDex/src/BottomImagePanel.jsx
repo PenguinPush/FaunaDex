@@ -2,21 +2,22 @@ import React, { useEffect, useState } from 'react';
 import './BottomImagePanel.css';
 import catchButton from "./assets/catch_button.png";
 
-const BottomImagePanel = ({ src, setCatchSuccess, setCatchFailed, catchFailed, catchSuccess, setPage, onClick, takeImage, currentlyCatching }) => {
+const BottomImagePanel = ({ animalText, src, playVideo, currentlyWaiting, setCatchSuccess, setCatchFailed, catchFailed, catchSuccess, setPage, onClick, takeImage, currentlyCatching }) => {
   return (
     <>
       <div className="bottom-image-panel">
         {currentlyCatching ? (
-          <p className="fade-message">
+          <p className="info-text">
             Swing your phone FAST to catch!
           </p>
-        ) : catchFailed ? (
-          <p onClick={() => { setCatchSuccess(false); setCatchFailed(false); }}>
-            Catch failed! There is no animal in the picture
+        ) :  
+        currentlyWaiting ? <p className="info-text">Waiting for backend server...</p> : catchFailed ? (
+          <p className="info-text" onClick={() => { setCatchSuccess(false); setCatchFailed(false); playVideo()}}>
+            Catch failed! There is no animal in the picture. Click here to continue.
           </p>
         ) : catchSuccess ? (
-          <p onClick={() => { setPage("dex"); setCatchSuccess(false); setCatchFailed(false); }}>
-            Catch successful! Click to see it in your dex
+          <p className="info-text" onClick={() => { setPage("dex"); setCatchSuccess(false); setCatchFailed(false); playVideo()}}>
+            Success! {animalText} has been caught. Click here to see it in your dex.
           </p>
         ) : (
           <>
