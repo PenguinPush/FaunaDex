@@ -5,6 +5,8 @@ from flask_cors import CORS
 from animal import Animal
 from mongodb import database_update, database_fetch
 from cloud_storage import upload_image, fetch_image
+from cropper import crop_to_animal
+
 
 app = Flask(__name__)
 CORS(app)
@@ -19,10 +21,10 @@ def get_image(filename):
     image_path = os.path.join('uploads', filename)  # adjust path as needed
 
     if not os.path.exists(image_path):
-        fetch_image(filename)  # Fetch the image from cloud storage
+        return {"error": "File not found"}, 404
 
     if not os.path.exists(image_path):
-        return {"error": "File not found"}, 404
+        fetch_image(filename)  # Fetch the image from cloud storage
 
     return send_file(image_path, mimetype='image/jpeg')  # adjust mimetype if needed
 
@@ -44,6 +46,14 @@ def upload():
 
     try:
         image.save(save_path)
+        crop_to_animal(save_path)
+        name, ext = os.path.splitext(save_path)
+        full_version_path = os.path.join(save_path, f"{name}_Full{ext}")
+        upload_image(save_path, filename)
+        print("a")
+        upload_image(full_version_path, filename)
+        print("b")
+
         animal_instance = Animal(save_path)
 
         print(animal_instance.species)
