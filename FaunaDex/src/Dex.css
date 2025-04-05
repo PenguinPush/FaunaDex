@@ -1,26 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+  /* Optional global styling for a retro vibe */
+  font-family: 'Press Start 2P', cursive;
+  margin: 0;
+  padding: 0;
+}
+
 .dex-container {
-    padding: 1rem;
-    position: relative;
-  }
-  
-  .back-button {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    background: transparent;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-  }
-  
-  .dex-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 3rem;
-    justify-content: center;
-  }
-  
-  /* .darken-image {
-    filter: brightness(20%);
-  } */
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 1200px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.back-button {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  background: #ffcb05;
+  border: none;
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-family: 'Press Start 2P', cursive;
+}
+
+.back-button:hover {
+  background: #ffdb4d;
+}
+
+/* Use CSS Grid for a flexible, modern layout */
+.dex-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  margin-top: 5rem;
+  padding: 1rem;
+}

@@ -8,13 +8,10 @@ const Dex = ({ onBack, setPage, setPokemon }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("fetching");
 
         const response = await fetch('http://127.0.0.1:5050/get_dex');
         console.log("fetching");
-
         const result = await response.json();
-        console.log(response);
         if (result.status === 'success') {
           setItems(result.data);
         } else {
@@ -23,10 +20,9 @@ const Dex = ({ onBack, setPage, setPokemon }) => {
       } catch (error) {
         console.error('Error fetching data:', error);
       }
-    }
-    fetchData();   
-    }
-  ,[])
+    };
+    fetchData();
+  }, []);
 
   const handleItemClick = (name) => {
     setPage("description");
@@ -49,8 +45,8 @@ const Dex = ({ onBack, setPage, setPokemon }) => {
           />
         ))}
       </div>
-    </div>
-     </>
+      </div>
+    </>
   );
 };
 

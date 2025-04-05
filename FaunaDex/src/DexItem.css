@@ -1,23 +1,31 @@
 .dex-item {
-    width: 100px;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
-  
-  .dex-item:hover {
-    transform: scale(1.05);
-  }
-  
-  .dex-image {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-  }
-  
-  .dex-name {
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    font-weight: bold;
-  }
-  
+  width: 120px;
+  padding: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+  background-color: #f7f7f7;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dex-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dex-image {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.dex-name {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  text-transform: capitalize;
+  font-family: 'Press Start 2P', cursive; /* Optional: for a retro, pixelated look */
+}
