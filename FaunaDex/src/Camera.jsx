@@ -44,7 +44,7 @@ const Camera = ({setPage}) => {
     return new Promise((resolve) => {
       var checkInterval = setInterval(()=>{
         // console.log("checking accelerometer");
-        if (!accelerometer.activated || (accelerometer.x + accelerometer.y) > 5){
+        if (!accelerometer.activated || (accelerometer.x + accelerometer.y) > 10){
           clearInterval(checkInterval);
           removeEventListener(accelerometer, accelListener);
           resolve();
