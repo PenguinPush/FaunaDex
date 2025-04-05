@@ -9,6 +9,7 @@ load_dotenv()
 
 OpenAI.api_key = os.environ.get("OPENAI_API_KEY")
 OpenAI.organization = os.environ.get("OPENAI_ORG")
+DISTANCE_CUTOFF = 1.0
 
 class Animal:
     def __init__(self, image_path: str):
@@ -30,11 +31,11 @@ class Animal:
         classifier = Semantic_Search()
 
         query, results, similar_item_ids = classifier.classify_image(self.image_path)
-
-        if results is not None and not results.empty:
+        print("distance: ", similar_item_ids[1][0])
+        if (results is not None and not results.empty) and similar_item_ids[1][0] <= DISTANCE_CUTOFF:
             self.species = results.iloc[0]['animals']
         else:
-            self.species = "Unknown"
+            self.species = "NOT AN ANIMAL"
         print(f"Image processed. Derived species: {self.species}")
 
     def get_species_info(self):
@@ -43,7 +44,8 @@ class Animal:
         Returns:
             str: A string with information about the species.
         """
-
+        if self.species == "NOT AN ANIMAL":
+            return "species is not an animal"
         prompt = (
             f"You are a zoology expert. Provide a short, two sentence very concise description of the animal species '{self.species}', "
             "highlighting its main characteristics and habitats. If your output is too long, you lose 10,000 dollars and your mom dies"
@@ -64,6 +66,8 @@ class Animal:
             return "Description not available."
 
     def get_type(self):
+        if self.species == "NOT AN ANIMAL":
+            return "species is not an animal"
         client = OpenAI()
 
         response = client.responses.create(
@@ -148,7 +152,7 @@ class Animal:
 
 if __name__ == '__main__':
     # Example usage:
-    test_image = '/Users/edwardwang/Downloads/cat.jpeg'   # Update with the actual image path
+    test_image = '/Users/edwardwang/Downloads/devil2.jpg'   # Update with the actual image path
     animal_instance = Animal(test_image)
     print(animal_instance.species)
     print(animal_instance.get_type())
