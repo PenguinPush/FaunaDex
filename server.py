@@ -12,16 +12,13 @@ app = Flask(__name__)
 CORS(app)
 
 # Ensure the uploads folder exists
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = 'saves'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 @app.route('/uploads/<filename>', methods=['GET'])
 def get_image(filename):
-    image_path = os.path.join('uploads', filename)  # adjust path as needed
-
-    if not os.path.exists(image_path):
-        return {"error": "File not found"}, 404
+    image_path = os.path.join(UPLOAD_FOLDER, filename)  # adjust path as needed
 
     if not os.path.exists(image_path):
         fetch_image(filename)  # Fetch the image from cloud storage
@@ -43,15 +40,16 @@ def upload():
     timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
     filename = f"{timestamp}_{image.filename}"
     save_path = os.path.join(UPLOAD_FOLDER, filename)
+    name, ext = os.path.splitext(filename)
+    filename_full = f"{name}_Full{ext}"
 
     try:
         image.save(save_path)
-        crop_to_animal(save_path)
-        name, ext = os.path.splitext(save_path)
-        full_version_path = os.path.join(save_path, f"{name}_Full{ext}")
+        save_path_full = crop_to_animal(save_path)
         upload_image(save_path, filename)
         print("a")
-        upload_image(full_version_path, filename)
+        print(save_path_full, filename_full)
+        upload_image(save_path_full, filename_full)
         print("b")
 
         animal_instance = Animal(save_path)
@@ -64,6 +62,7 @@ def upload():
         response = jsonify({'message': 'Image received', 'filename': filename,
                             'name':animal_instance.species, 'is_animal':is_animal}), 200
     except Exception as e:
+        print(str(e))
         response = jsonify({'error': str(e)}), 500
 
     return response
