@@ -1,3 +1,4 @@
+
 .pokemon-description-page {
   width: 100vw;
   height: 100%;
@@ -31,12 +32,75 @@
 
 .pokemon-name {
   position: absolute;
-  top: 55px; /* Adjust the distance from the top */
-  right: 55px; /* Adjust the distance from the right */
-  font-size: 3rem;
+  top: 55px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10vw;
   font-weight: bold;
   color: #333;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  max-font-size: 4rem;
+}
+
+.background-rectangle {
+  height: 40%;
+  background-color: rgb(1, 94, 29);
+  color: rgb(255, 255, 255);
+  width: 100%;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.gray-rectangle {
+  height: 45%;
+  background-color: rgb(76, 76, 76);
+  color: rgb(255, 255, 255);
+  width: 100%;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+  z-index: 0;
+}
+
+.Lgray-rectangle {
+  height: 13%;
+  background-color: rgb(139, 139, 139);
+  color: rgb(255, 255, 255);
+  width: 100%;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+}
+
+.pokemon-caught-position {
+  position: absolute;
+  bottom: 45px; /* Adjust this to position the text within the light gray box */
+  left: 10px;  /* Adjust the left position if needed */
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #ffffff;
+  z-index: 2; /* Ensure it appears above any background content */
+}
+
+.background-image {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
 }
 
 .pokemon-image {
@@ -55,12 +119,3 @@
   font-size: 1rem;
   color: #666;
 }
-
-.pokemon-caught {
-  font-size: 1rem;
-  font-weight: 500;
-}
-
-/* .darken-image {
-  filter: brightness(20%);
-} */
