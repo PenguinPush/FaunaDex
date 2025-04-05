@@ -50,7 +50,9 @@ def upload():
         name, ext = os.path.splitext(save_path)
         full_version_path = os.path.join(save_path, f"{name}_Full{ext}")
         upload_image(save_path, filename)
+        print("a")
         upload_image(full_version_path, filename)
+        print("b")
 
         animal_instance = Animal(save_path)
 
