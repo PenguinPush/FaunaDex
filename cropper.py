@@ -129,6 +129,5 @@ def crop_to_animal(image_path, margin_ratio=0.1):
 
 
 if __name__ == '__main__':
-    # Update with the path to your image.
     input_image_path = "/Users/edwardwang/Downloads/gura.jpg"
     crop_to_animal(input_image_path)
