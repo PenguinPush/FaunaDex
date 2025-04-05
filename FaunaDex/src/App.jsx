@@ -20,7 +20,7 @@ function App() {
               name={currentPokemon.name}
               description={currentPokemon.description}
               timesCaught={currentPokemon.times_caught}
-              image={"http://" + currentPokemon.image_path}
+              image={"http://127.0.0.1:5050/" + currentPokemon.image_path}
               type_1={currentPokemon.type_1}
               type_2={currentPokemon.type_2}
               first_caught_city={currentPokemon.first_caught_city}
