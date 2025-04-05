@@ -31,15 +31,18 @@ body {
   font-family: 'Pixelify Sans', cursive;
 }
 
-.back-button:hover {
-  background: #ffdb4d;
-}
-
-/* Use CSS Grid for a flexible, modern layout */
+/* Use CSS Grid for a flexible, modern layout with better single item support */
 .dex-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 300px));
+  justify-content: center;
   gap: 1.5rem;
   margin-top: 5rem;
   padding: 1rem;
+}
+
+.dex-grid > * {
+  max-width: 300px;
+  width: 100%;
+  margin: 0 auto;
 }
