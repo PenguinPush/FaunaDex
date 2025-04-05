@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 from flask_cors import CORS
 from animal import Animal
-from mongodb import database_update
+from mongodb import database_update, database_fetch
 
 app = Flask(__name__)
 CORS(app)
@@ -53,6 +53,10 @@ def upload():
         response = jsonify({'error': str(e)}), 500
 
     return response
+
+@app.route('/get_dex', methods=['GET'])
+def get_dex():
+    return database_fetch()
 
 
 if __name__ == '__main__':

@@ -31,7 +31,7 @@ def database_update(animal_instance, image_path):
             new_animal = {
                 "name": animal_instance.species,
                 "description": animal_instance.get_species_info(),
-                "times_caught": 0,
+                "times_caught": 1,
                 "image_path": image_path,
                 "image_path_nobg": image_path,
                 "first_caught_time": int(datetime.utcnow().timestamp()),
@@ -48,3 +48,14 @@ def database_update(animal_instance, image_path):
 
     except Exception as e:
         return {"status": "error", "message": str(e)}
+
+
+def database_fetch():
+    try:
+        fauna_data = list(collection.find({}))
+        for animal in fauna_data:
+            animal["_id"] = str(animal["_id"])  # Convert ObjectId to string for JSON serialization
+        return {"status": "success", "data": fauna_data}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
