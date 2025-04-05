@@ -21,9 +21,7 @@ dataset = load_dataset("PenguinPush/animals-large", split="train")
 
 df = pd.DataFrame(dataset)[:2706]
 
-embeds = numpy.load("embeds/embeds-openai-large-gen3.npy")
-
-search_index = AnnoyIndex(embeds.shape[1], 'angular')
+search_index = AnnoyIndex(3072, 'angular')
 search_index.load('embeds/embeds-openai-large-gen3.ann')
 
 query = input("Input: ")
