@@ -1,0 +1,20 @@
+.bottom-image-panel {
+    height: 50vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Push image to bottom */
+    align-items: center;
+    background-color: transparent; /* or any background you like */
+  }
+  
+  .bottom-image {
+    height: auto;
+    max-height: 50%;
+    width: auto;
+    max-width: 50%;
+    object-fit: contain;
+    position: absolute;
+    bottom: 0;
+  }
+  

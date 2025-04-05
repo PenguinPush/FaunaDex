@@ -5,9 +5,11 @@ import './App.css'
 import Camera from './Camera'
 import Dex from './Dex'
 import Description from './Description'
+import BottomImagePanel from './BottomImagePanel'
+import dexbutton from "./assets/dexbutton.png"
 
 function App() {
-  const [page, setPage] = useState("dex")
+  const [page, setPage] = useState("camera")
   const [currentPokemon, setPokemon] = useState({})
 
 
@@ -15,7 +17,14 @@ function App() {
     <>
       {page == "description" ? <Description onBack={()=>{setPage("dex")}} name={currentPokemon.name} description={currentPokemon.description} timesCaught={currentPokemon.timesCaught} image={currentPokemon.image}/> : null}
       {page == "dex" ? <Dex setPokemon={(pokemon)=>{setPokemon(pokemon)}} onBack={()=>{setPage("camera")}} setPage={(page)=>{setPage(page)}} /> : null}
-      {page == "camera" ? <Camera /> : null}
+      {page == "camera" ? 
+      ( <>
+        <Camera /> 
+        <BottomImagePanel src={dexbutton} onClick={()=>{setPage("dex")}} />
+        </>
+      )
+        : null
+      }
     </>
   )
 }
