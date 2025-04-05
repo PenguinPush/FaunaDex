@@ -43,11 +43,12 @@ def upload():
         animal_instance = Animal(save_path)
 
         print(animal_instance.species)
-        if animal_instance.species != "NOT AN ANIMAL":
+        is_animal = animal_instance.species != "NOT AN ANIMAL"
+        if is_animal:
             print(database_update(animal_instance, save_path))
 
         response = jsonify({'message': 'Image received', 'filename': filename,
-                            'name':animal_instance.species}), 200
+                            'name':animal_instance.species, 'is_animal':is_animal}), 200
     except Exception as e:
         response = jsonify({'error': str(e)}), 500
 

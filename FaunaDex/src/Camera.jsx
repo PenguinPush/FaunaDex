@@ -89,8 +89,10 @@ const Camera = ({setPage}) => {
       });
 
       if (response.ok) {
+        const data = await response.json()
+        console.log(data.is_animal)
         console.log('Image uploaded successfully');
-        if (response.name == "NOT AN ANIMAL"){
+        if (!data.is_animal){
           setCatchFailed(true); // TODO: do this if the backend returns that its bad
         }
 
