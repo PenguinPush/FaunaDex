@@ -6,7 +6,9 @@ from animal import Animal
 from mongodb import database_update, database_fetch
 from cloud_storage import upload_image, fetch_image
 from cropper import crop_to_animal
-import traceback
+import truststore
+
+truststore.inject_into_ssl()
 
 
 app = Flask(__name__)
