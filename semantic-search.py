@@ -10,9 +10,6 @@ pd.set_option('display.max_colwidth', None)
 pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 
-openai.organization = "org-1sk7NL1ZuYWVNvkPd7cW6jDJ"
-openai.api_key = "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"
-
 dataset = load_dataset("PenguinPush/animals-large", split="train")
 
 df = pd.DataFrame(dataset)[:2706]

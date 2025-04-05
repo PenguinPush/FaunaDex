@@ -1,10 +1,10 @@
 from googleapiclient import discovery
 import base64
 
-API_KEY = 'AIzaSyA1YbvSnreKabR88sgBYY_PjMuhm1mTavs'
+GOOGLE_API_KEY = 'AIzaSyA1YbvSnreKabR88sgBYY_PjMuhm1mTavs'
 
 # Build the service object.
-service = discovery.build('vision', 'v1', developerKey=API_KEY)
+service = discovery.build('vision', 'v1', developerKey=GOOGLE_API_KEY)
 
 # Path to your image.
 image_path = '/Users/edwardwang/Downloads/husky.webp'
