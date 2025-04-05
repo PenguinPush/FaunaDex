@@ -122,7 +122,7 @@ const Camera = ({setPage}) => {
     formData.append('image', imageBlob, 'snapshot.jpg');
 
     try {
-      const response = await fetch('https://fauna-dex-3f13cfbb2cab.herokuapp.com/upload', {
+      const response = await fetch('http://127.0.0.1:5050/upload', {
         method: 'POST',
         body: formData,
       });
