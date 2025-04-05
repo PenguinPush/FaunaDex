@@ -76,13 +76,13 @@ def crop_to_animal(image_path, margin_ratio=0.1):
     objects = response.get('responses', [{}])[0].get('localizedObjectAnnotations', [])
     if not objects:
         print("No objects detected in the image.")
-        return None
+        return full_version_path
 
     # Filter objects to only those that are likely animals.
     animal_objects = [obj for obj in objects if is_animal(obj.get('name', ''))]
     if not animal_objects:
         print("No animal detected in the image.")
-        return None
+        return full_version_path
 
     # Select the animal object with the highest confidence score.
     primary_animal = max(animal_objects, key=lambda obj: obj.get('score', 0))
