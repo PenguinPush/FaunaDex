@@ -8,21 +8,26 @@ const Dex = ({onBack, setPage, setPokemon}) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://127.0.0.1:5050/get_dex');
-        const result = await response.json();
-        if (result.status === 'success') {
-          setItems(result.data);
-        } else {
-          console.error('Failed to fetch data:', result.message);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+    setItems([
+      {name: "squirtle",
+       image: "uploads/20250405173140_snapshot.jpg"
       }
-    };
+    ])
+    // const fetchData = async () => {
+    //   try {
+    //     const response = await fetch('http://127.0.0.1:5050/get_dex');
+    //     const result = await response.json();
+    //     if (result.status === 'success') {
+    //       setItems(result.data);
+    //     } else {
+    //       console.error('Failed to fetch data:', result.message);
+    //     }
+    //   } catch (error) {
+    //     console.error('Error fetching data:', error);
+    //   }
+    // };
 
-    fetchData();
+    // fetchData();
   }, []);
 
   const handleItemClick = (name) => {
