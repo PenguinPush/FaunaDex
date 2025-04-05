@@ -1,15 +1,18 @@
 from dotenv import load_dotenv
 from openai import OpenAI
-
 from semantic_search import Semantic_Search
 import requests
+import openai
 import os
+import truststore
+truststore.inject_into_ssl()
 
 load_dotenv()
 
 OpenAI.api_key = os.environ.get("OPENAI_API_KEY")
 OpenAI.organization = os.environ.get("OPENAI_ORG")
 DISTANCE_CUTOFF = 1.1
+
 
 class Animal:
     def __init__(self, image_path: str):
