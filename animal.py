@@ -1,5 +1,15 @@
-from semantic_search import Semantic_Search  # Adjust the import as necessary
+from dotenv import load_dotenv
+from openai import OpenAI
 
+from semantic_search import Semantic_Search
+import requests
+import os
+from openai import OpenAI
+
+load_dotenv()
+
+OpenAI.api_key = os.environ.get("OPENAI_API_KEY")
+OpenAI.organization = os.environ.get("OPENAI_ORG")
 
 class Animal:
     def __init__(self, image_path: str):
@@ -30,15 +40,31 @@ class Animal:
 
     def get_species_info(self):
         """
-        Template method to retrieve additional information about the species.
-
-        You can extend this method to connect to an external API or a database to fetch
-        more detailed information on the species.
 
         Returns:
             str: A string with information about the species.
         """
-        return f"Information on species '{self.species}' is not yet implemented."
+
+        prompt = (
+            f"You are a zoology expert. Provide a short, two sentence very concise description of the animal species '{self.species}', "
+            "highlighting its main characteristics and habitats. If your output is too long, you lose 10,000 dollars and your mom dies"
+        )
+        try:
+            from openai import OpenAI
+            client = OpenAI()
+
+            response = client.responses.create(
+                model="gpt-4o",
+                input= prompt,
+                max_output_tokens=100
+            )
+            description = response.output_text.strip()
+            return description
+        except Exception as e:
+            print("Error generating species description:", e)
+            return "Description not available."
+
+
 
     def __str__(self):
         return f"Animal(species={self.species}, image_path={self.image_path})"
@@ -46,7 +72,7 @@ class Animal:
 
 if __name__ == '__main__':
     # Example usage:
-    test_image = '/Users/edwardwang/Downloads/dog.jpg'  # Update with the actual image path
+    test_image = '/Users/edwardwang/Downloads/cat.jpeg'  # Update with the actual image path
     animal_instance = Animal(test_image)
     print(animal_instance.species)
     print(animal_instance.get_species_info())
