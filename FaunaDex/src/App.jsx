@@ -14,7 +14,7 @@ function App() {
 
   return (
     <>
-      {page == "description" ? <Description onBack={()=>{setPage("dex")}} name={currentPokemon.name} description={currentPokemon.description} timesCaught={currentPokemon.timesCaught} image={currentPokemon.image}/> : null}
+      {page == "description" ? <Description onBack={()=>{setPage("dex")}} name={currentPokemon.name} description={currentPokemon.description} timesCaught={currentPokemon.times_caught} image={"http://127.0.0.1:5050/" + currentPokemon.image_path}/> : null}
       {page == "dex" ? <Dex setPokemon={(pokemon)=>{setPokemon(pokemon)}} onBack={()=>{setPage("camera")}} setPage={(page)=>{setPage(page)}} /> : null}
       {page == "camera" ? 
       ( <>

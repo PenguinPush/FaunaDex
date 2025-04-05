@@ -18,16 +18,17 @@ collection = db["fauna_data"]
 def database_update(animal_instance, image_path):
     try:
         existing_animal = collection.find_one({"name": animal_instance.species})
-        new = False
+        is_new = False
         type_data = loads(animal_instance.get_type())
 
         if existing_animal:
             collection.update_one(
                 {"_id": existing_animal["_id"]},
-                {"$inc": {"times_caught": 1}}
+                {"$inc": {"times_caught": 1},
+                 "$set": {"image_path": image_path, "image_path_nobg": image_path}}
             )
         else:
-            new = True
+            is_new = True
             new_animal = {
                 "name": animal_instance.species,
                 "description": animal_instance.get_species_info(),
@@ -41,10 +42,10 @@ def database_update(animal_instance, image_path):
             }
             collection.insert_one(new_animal)
 
-        if new:
-            return {"status": "success", "new": new, "animal": new_animal}
+        if is_new:
+            return {"status": "success", "new": is_new, "animal": new_animal}
         else:
-            return {"status": "success", "new": new, "animal": existing_animal}
+            return {"status": "success", "new": is_new, "animal": existing_animal}
 
     except Exception as e:
         return {"status": "error", "message": str(e)}

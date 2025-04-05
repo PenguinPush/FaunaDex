@@ -13,7 +13,7 @@ UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
-@app.route('/image/<filename>', methods=['GET'])
+@app.route('/uploads/<filename>', methods=['GET'])
 def get_image(filename):
     image_path = os.path.join('uploads', filename)  # adjust path as needed
 
