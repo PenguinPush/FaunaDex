@@ -2,17 +2,63 @@ import React from 'react';
 import DexItem from './DexItem';
 import './Dex.css';
 
-const Dex = ({onBack, setPage}) => {
+const Dex = ({onBack, setPage, setPokemon}) => {
   const items = [
-    { name: 'Bulbasaur', image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png' },
-    { name: 'Charmander', image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png' },
-    { name: 'Squirtle', image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png' },
-    { name: 'Squirtle', image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png' },
-    { name: 'Squirtle', image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png' },
-    { name: 'Squirtle', image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png' },
-    { name: 'Squirtle', image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png' },
-    { name: 'Squirtle', image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png' },
-    { name: 'Squirtle', image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png' },
+    { 
+      name: 'Bulbasaur', 
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
+      timesCaught: 0,
+      description: "the cutest"
+    },
+    { 
+      name: 'Charmander', 
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png',
+      timesCaught: 0,
+      description: "the cutest"
+    },
+    { 
+      name: 'Squirtle', 
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png',
+      timesCaught: 0,
+      description: "the cutest"
+    },
+    { 
+      name: 'Bulbasaur', 
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
+      timesCaught: 0,
+      description: "the cutest"
+    },
+    { 
+      name: 'Charmander', 
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png',
+      timesCaught: 0,
+      description: "the cutest"
+    },
+    { 
+      name: 'Squirtle', 
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png',
+      timesCaught: 0,
+      description: "the cutest"
+    },
+    { 
+      name: 'Bulbasaur', 
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
+      timesCaught: 0,
+      description: "the cutest"
+    },
+    { 
+      name: 'Charmander', 
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png',
+      timesCaught: 0,
+      description: "the cutest"
+    },
+    { 
+      name: 'Squirtle', 
+      image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png',
+      timesCaught: 0,
+      description: "the cutest"
+    },
+
 
     // Add more items as needed
   ];
@@ -30,7 +76,10 @@ const Dex = ({onBack, setPage}) => {
             key={index}
             image={item.image}
             name={item.name}
-            onClick={() => handleItemClick(item.name)}
+            onClick={() => {
+              handleItemClick(item.name)
+              setPokemon(item);
+            }}
           />
         ))}
       </div>

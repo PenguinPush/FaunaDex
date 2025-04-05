@@ -7,12 +7,14 @@ import Dex from './Dex'
 import Description from './Description'
 
 function App() {
-  const [page, setPage] = useState("description")
+  const [page, setPage] = useState("dex")
+  const [currentPokemon, setPokemon] = useState({})
+
 
   return (
     <>
-      {page == "description" ? <Description onBack={()=>{setPage("dex")}} name="Squirtle" description="Hello world!" timesCaught={1} image="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png"/> : null}
-      {page == "dex" ? <Dex onBack={()=>{setPage("camera")}} setPage={(page)=>{setPage(page)}} /> : null}
+      {page == "description" ? <Description onBack={()=>{setPage("dex")}} name={currentPokemon.name} description={currentPokemon.description} timesCaught={currentPokemon.timesCaught} image={currentPokemon.image}/> : null}
+      {page == "dex" ? <Dex setPokemon={(pokemon)=>{setPokemon(pokemon)}} onBack={()=>{setPage("camera")}} setPage={(page)=>{setPage(page)}} /> : null}
       {page == "camera" ? <Camera /> : null}
     </>
   )
