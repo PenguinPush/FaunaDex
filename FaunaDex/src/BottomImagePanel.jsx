@@ -7,21 +7,31 @@ const BottomImagePanel = ({ animalText, src, playVideo, currentlyWaiting, setCat
     <>
       <div className="bottom-image-panel">
         {currentlyCatching ? (
-          <p className="fade-message">
+          <>
+          <p className="info-text">
             Swing your phone FAST to catch!
           </p>
+          <div className="big-white-rectangle"></div>
+          </>
         ) :  
-        currentlyWaiting ? <p>Waiting for backend server...</p> : catchFailed ? (
-          <p onClick={() => { setCatchSuccess(false); setCatchFailed(false); playVideo()}}>
-            Catch failed! There is no animal in the picture. Click to continue;
+        currentlyWaiting ? <p className="info-text">Waiting for backend server...</p> : catchFailed ? (
+          <>
+          <p className="info-text" onClick={() => { setCatchSuccess(false); setCatchFailed(false); playVideo()}}>
+            Catch failed! There is no animal in the picture. Click here to continue.
           </p>
+          <div className="big-white-rectangle"></div>
+          </>
         ) : catchSuccess ? (
-          <p onClick={() => { setPage("dex"); setCatchSuccess(false); setCatchFailed(false); playVideo()}}>
-            Catch successful: {animalText}! Click to see it in your dex.
+          <>
+          <p className="info-text" onClick={() => { setPage("dex"); setCatchSuccess(false); setCatchFailed(false); playVideo()}}>
+            Success! {animalText} has been caught. Click here to see it in your dex.
           </p>
+          <div className="big-white-rectangle"></div>
+          </>
         ) : (
           <>
             <div className="red-rectangle"></div>
+            <div className="white-rectangle"></div>
             <img src={catchButton} onClick={takeImage} className="middle-image" />
             <img src={src} onClick={onClick} className="bottom-image" />
           </>

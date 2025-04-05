@@ -13,7 +13,7 @@ UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
-@app.route('/image/<filename>', methods=['GET'])
+@app.route('/uploads/<filename>', methods=['GET'])
 def get_image(filename):
     image_path = os.path.join('uploads', filename)  # adjust path as needed
 
@@ -60,4 +60,5 @@ def get_dex():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5050)
+    port = int(os.getenv('PORT', 5050))
+    app.run(host='0.0.0.0', port=port, debug=True)
