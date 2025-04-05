@@ -72,8 +72,9 @@ const Dex = ({onBack, setPage, setPokemon}) => {
   };
 
   return (
+    <>
+    <button className="back-button" onClick={onBack}>← Back</button>
     <div className="dex-container">
-      <button className="back-button" onClick={onBack}>← Back</button>
       <div className="dex-grid">
         {items.map((item, index) => (
           <DexItem
@@ -88,6 +89,7 @@ const Dex = ({onBack, setPage, setPokemon}) => {
         ))}
       </div>
     </div>
+     </>
   );
 };
 
