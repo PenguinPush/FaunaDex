@@ -14,11 +14,12 @@
   left: 1rem;
   background: transparent;
   border: none;
-  font-size: 5rem;
+  font-size: 1.4rem;
   cursor: pointer;
   padding: 0.5rem 1rem;
+  color: #000;      /* Black text */
+  z-index: 100;     /* Ensure it's on top */
 }
-
 
 /* Main Description Container */
 .pokemon-description {
