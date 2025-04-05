@@ -6,16 +6,20 @@ import openai
 import os
 import certifi
 import truststore
-truststore.inject_into_ssl()
+import httpx
 
 load_dotenv()
 OpenAI.api_key = os.environ.get("OPENAI_API_KEY")
 OpenAI.organization = os.environ.get("OPENAI_ORG")
 
 DISTANCE_CUTOFF = 1.1
+truststore.inject_into_ssl()
+
+
 
 openai.verify_ssl_certs = False
 openai._default_client._client._session.verify = certifi.where()
+
 class Animal:
     def __init__(self, image_path: str):
         """
@@ -56,7 +60,8 @@ class Animal:
             "highlighting its main characteristics and habitats. If your output is too long, you lose 10,000 dollars and your mom dies"
         )
         try:
-            client = OpenAI()
+            client = OpenAI(
+    http_client = httpx.Client(verify=False))
 
             response = client.responses.create(
                 model="gpt-4o",
