@@ -8,6 +8,7 @@ const Camera = ({setPage}) => {
   const videoRef = useRef(null);
   const [isPicturing, setIsPicturing] = useState(false);
   const [currentlyCatching, setCurrentlyCatching] = useState(false);
+  const [catchSuccess, setCatchSuccess] = useState(false);
 
   const canvasRef = useRef(null); // hidden canvas for capturing image
 
@@ -62,6 +63,7 @@ const Camera = ({setPage}) => {
     await captureAndSend(imageBlob);
     
     setCurrentlyCatching(false);
+    setCatchSuccess(true);
     if (videoRef.current) {
       videoRef.current.play();
     }
@@ -103,7 +105,7 @@ const Camera = ({setPage}) => {
 
     <BottomImagePanel takeImage={ ()=>{
       capture();
-    }} src={dexbutton} currentlyCatching={currentlyCatching} onClick={()=>{setPage("dex")}} />
+    }} src={dexbutton} catchSuccess={catchSuccess} currentlyCatching={currentlyCatching} setPage={setPage} onClick={()=>{setPage("dex")}} />
     </>
 
   );
