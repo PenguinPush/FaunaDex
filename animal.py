@@ -152,7 +152,7 @@ class Animal:
 
 if __name__ == '__main__':
     # Example usage:
-    test_image = '/Users/edwardwang/Downloads/knight.jpeg'   # Update with the actual image path
+    test_image = '/Users/edwardwang/Downloads/devil2.jpg'   # Update with the actual image path
     animal_instance = Animal(test_image)
     print(animal_instance.species)
     print(animal_instance.get_type())

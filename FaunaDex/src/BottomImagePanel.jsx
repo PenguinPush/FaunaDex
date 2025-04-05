@@ -2,27 +2,20 @@ import React, { useEffect, useState } from 'react';
 import './BottomImagePanel.css';
 import catchButton from "./assets/catch_button.png";
 
-const BottomImagePanel = ({ src, catchSuccess, setPage, onClick, takeImage, currentlyCatching }) => {
-  const [fadeMessage, setFadeMessage] = useState(true);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFadeMessage((prev) => !prev);
-    }, 5000); // Toggle visibility every 5 seconds
-    return () => clearInterval(interval); // Cleanup the interval when the component unmounts
-  }, []);
-
+const BottomImagePanel = ({ src, setCatchSuccess, setCatchFailed, catchFailed, catchSuccess, setPage, onClick, takeImage, currentlyCatching }) => {
   return (
     <>
       <div className="bottom-image-panel">
         {currentlyCatching ? (
-          <>
-            <p className={`fade-message ${fadeMessage ? 'visible' : ''}`}>
-              Swing your phone FAST to catch!
-            </p>
-          </>
+          <p className="fade-message">
+            Swing your phone FAST to catch!
+          </p>
+        ) : catchFailed ? (
+          <p onClick={() => { setCatchSuccess(false); setCatchFailed(false); }}>
+            Catch failed! There is no animal in the picture
+          </p>
         ) : catchSuccess ? (
-          <p onClick={() => { setPage("dex"); }}>
+          <p onClick={() => { setPage("dex"); setCatchSuccess(false); setCatchFailed(false); }}>
             Catch successful! Click to see it in your dex
           </p>
         ) : (

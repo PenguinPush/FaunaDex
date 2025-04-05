@@ -9,6 +9,8 @@ const Camera = ({setPage}) => {
   const [isPicturing, setIsPicturing] = useState(false);
   const [currentlyCatching, setCurrentlyCatching] = useState(false);
   const [catchSuccess, setCatchSuccess] = useState(false);
+  const [catchFailed, setCatchFailed] = useState(false);
+
 
   const canvasRef = useRef(null); // hidden canvas for capturing image
 
@@ -54,6 +56,7 @@ const Camera = ({setPage}) => {
       canvas.toBlob(resolve, 'image/jpeg')
     );
     setCurrentlyCatching(true);
+
     if (videoRef.current) {
       videoRef.current.pause();
     }
@@ -83,8 +86,11 @@ const Camera = ({setPage}) => {
 
       if (response.ok) {
         console.log('Image uploaded successfully');
+        setCatchFailed(true); // TODO: do this if the backend returns that its bad
+
       } else {
         console.error('Upload failed');
+
       }
     } catch (error) {
       console.error('Error sending image to backend:', error);
@@ -105,7 +111,7 @@ const Camera = ({setPage}) => {
 
     <BottomImagePanel takeImage={ ()=>{
       capture();
-    }} src={dexbutton} catchSuccess={catchSuccess} currentlyCatching={currentlyCatching} setPage={setPage} onClick={()=>{setPage("dex")}} />
+    }} src={dexbutton} setCatchSuccess={setCatchSuccess} setCatchFailed={setCatchFailed} catchFailed={catchFailed} catchSuccess={catchSuccess} currentlyCatching={currentlyCatching} setPage={setPage} onClick={()=>{setPage("dex")}} />
     </>
 
   );
