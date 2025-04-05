@@ -4,6 +4,13 @@ import pandas as pd
 from datasets import load_dataset
 from annoy import AnnoyIndex
 import warnings
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+openai.api_key = os.environ.get("OPENAI_API_KEY")
+openai.organization = os.environ.get("OPENAI_ORG")
 
 warnings.filterwarnings('ignore')
 pd.set_option('display.max_colwidth', None)

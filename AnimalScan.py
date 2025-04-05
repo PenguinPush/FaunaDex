@@ -1,7 +1,10 @@
 from googleapiclient import discovery
 import base64
+from dotenv import load_dotenv
+import os
 
-GOOGLE_API_KEY = 'AIzaSyA1YbvSnreKabR88sgBYY_PjMuhm1mTavs'
+load_dotenv()
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY")
 
 # Build the service object.
 service = discovery.build('vision', 'v1', developerKey=GOOGLE_API_KEY)
