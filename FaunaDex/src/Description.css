@@ -47,7 +47,7 @@
 }
 
 .background-rectangle {
-  height: 40%;
+  height: 35%;
   background-color: rgb(1, 94, 29);
   color: rgb(255, 255, 255);
   width: 100%;
@@ -61,7 +61,7 @@
 }
 
 .gray-rectangle {
-  height: 45%;
+  height: 50%;
   background-color: rgb(76, 76, 76);
   color: rgb(255, 255, 255);
   width: 100%;

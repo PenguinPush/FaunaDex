@@ -32,7 +32,7 @@
 
 .red-rectangle {
     height: 50%;
-    background-color: red;
+    background-color: rgb(85, 22, 22);
     color: red;
     width: 100%;
     border: 5px solid #000000;
@@ -44,7 +44,7 @@
 
 .white-rectangle {
   height: 53%;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(148, 148, 148);
   color: rgb(255, 255, 255);
   width: 100%;
   border: 5px solid #000000;
