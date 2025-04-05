@@ -4,15 +4,18 @@ from semantic_search import Semantic_Search
 import requests
 import openai
 import os
+import certifi
 import truststore
-truststore.inject_into_ssl()
+import httpx
 
 load_dotenv()
-
 OpenAI.api_key = os.environ.get("OPENAI_API_KEY")
 OpenAI.organization = os.environ.get("OPENAI_ORG")
-DISTANCE_CUTOFF = 1.1
 
+DISTANCE_CUTOFF = 1.1
+truststore.inject_into_ssl()
+
+openai.verify_ssl_certs = False
 
 class Animal:
     def __init__(self, image_path: str):
@@ -54,13 +57,14 @@ class Animal:
             "highlighting its main characteristics and habitats. If your output is too long, you lose 10,000 dollars and your mom dies"
         )
         try:
-            client = OpenAI()
+            client = OpenAI(http_client = httpx.Client(verify=False))
 
             response = client.responses.create(
                 model="gpt-4o",
                 input= prompt,
                 max_output_tokens=100,
-                temperature=1
+                temperature=1,
+                verify=False
             )
             description = response.output_text.strip()
             return description

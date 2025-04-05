@@ -6,6 +6,8 @@ from annoy import AnnoyIndex
 import warnings
 from dotenv import load_dotenv
 import os
+import truststore
+import certifi
 
 # Import the image recognizer class
 from image_recognizer import ImageRecognizer
@@ -14,6 +16,11 @@ load_dotenv()
 
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 openai.organization = os.environ.get("OPENAI_ORG")
+
+DISTANCE_CUTOFF = 1.1
+truststore.inject_into_ssl()
+
+openai.verify_ssl_certs = False
 
 # Suppress warnings and set pandas display options
 warnings.filterwarnings('ignore')
@@ -46,7 +53,8 @@ class Semantic_Search:
         """
         openai_output = openai.embeddings.create(
             input=query,
-            model="text-embedding-3-large"
+            model="text-embedding-3-large",
+            verify=False
         )
         return openai_output.data[0].embedding
 
