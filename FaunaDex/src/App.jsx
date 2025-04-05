@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       {page == "description" ? <Description onBack={()=>{setPage("dex")}} name="Squirtle" description="Hello world!" timesCaught={1} image="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png"/> : null}
-      {page == "dex" ? <Dex onBack={()=>{setPage("camera")}} /> : null}
+      {page == "dex" ? <Dex onBack={()=>{setPage("camera")}} setPage={(page)=>{setPage(page)}} /> : null}
       {page == "camera" ? <Camera /> : null}
     </>
   )

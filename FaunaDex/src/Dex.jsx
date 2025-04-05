@@ -2,7 +2,7 @@ import React from 'react';
 import DexItem from './DexItem';
 import './Dex.css';
 
-const Dex = (onBack) => {
+const Dex = ({onBack, setPage}) => {
   const items = [
     { name: 'Bulbasaur', image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png' },
     { name: 'Charmander', image: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png' },
@@ -18,7 +18,7 @@ const Dex = (onBack) => {
   ];
 
   const handleItemClick = (name) => {
-    console.log(`Clicked on ${name}`);
+    setPage("description");
   };
 
   return (
