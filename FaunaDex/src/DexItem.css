@@ -1,0 +1,23 @@
+.dex-item {
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .dex-item:hover {
+    transform: scale(1.05);
+  }
+  
+  .dex-image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+  }
+  
+  .dex-name {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+  

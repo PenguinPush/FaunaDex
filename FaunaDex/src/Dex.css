@@ -1,0 +1,23 @@
+.dex-container {
+    padding: 1rem;
+    position: relative;
+  }
+  
+  .back-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+  
+  .dex-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 3rem;
+    justify-content: center;
+  }
+  
