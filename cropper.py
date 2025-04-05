@@ -96,6 +96,6 @@ def crop_to_animal(image_path, output_path="cropped_animal.jpg"):
 
 if __name__ == '__main__':
     # Update with the path to your image.
-    input_image_path = "/Users/edwardwang/Downloads/devil.jpeg"
-    output_image_path = "/Users/edwardwang/Documents/GitHub/FaunaDex/CroppedPhotos"
+    input_image_path = "/Users/edwardwang/Downloads/husky.webp"
+    output_image_path = "/Users/edwardwang/Documents/GitHub/FaunaDex/CroppedPhotos/croppedimage.png"
     crop_to_animal(input_image_path, output_image_path)
