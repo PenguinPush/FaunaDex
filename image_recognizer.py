@@ -48,7 +48,7 @@ class ImageRecognizer:
 if __name__ == '__main__':
     # Example usage if running this file directly.
     recognizer = ImageRecognizer()
-    image_path = '/Users/edwardwang/Downloads/husky.webp'
+    image_path = '/Users/edwardwang/Downloads/man.png'
     labels = recognizer.get_labels(image_path)
     print('Labels:')
     for label in labels:

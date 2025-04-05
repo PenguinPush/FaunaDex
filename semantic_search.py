@@ -106,7 +106,7 @@ class Semantic_Search:
 if __name__ == '__main__':
     # Example usage:
     classifier = Semantic_Search()
-    image_path = '/Users/edwardwang/Downloads/husky.webp'  # Update this path as needed
+    image_path = '/Users/edwardwang/Downloads/man.png'  # Update this path as needed
 
     query, results, similar_item_ids = classifier.classify_image(image_path)
 
