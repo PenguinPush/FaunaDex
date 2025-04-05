@@ -2,7 +2,8 @@ from flask import Flask, request, jsonify, send_file
 import os
 from datetime import datetime
 from flask_cors import CORS
-
+from animal import Animal
+from mongodb import database_update
 
 app = Flask(__name__)
 CORS(app)
@@ -38,6 +39,12 @@ def upload():
 
     try:
         image.save(save_path)
+
+        animal_instance = Animal(save_path)
+        print(animal_instance.species)
+        database_update(animal_instance, save_path)
+        print("database successfully upated")
+
         response = jsonify({'message': 'Image received', 'filename': filename}), 200
     except Exception as e:
         response = jsonify({'error': str(e)}), 500
