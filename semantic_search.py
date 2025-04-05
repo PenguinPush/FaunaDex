@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI
 import numpy as np
 import pandas as pd
 from datasets import load_dataset
@@ -7,20 +7,18 @@ import warnings
 from dotenv import load_dotenv
 import os
 import truststore
-import certifi
+import httpx
 
 # Import the image recognizer class
 from image_recognizer import ImageRecognizer
 
 load_dotenv()
 
-openai.api_key = os.environ.get("OPENAI_API_KEY")
-openai.organization = os.environ.get("OPENAI_ORG")
+OpenAI.api_key = os.environ.get("OPENAI_API_KEY")
+OpenAI.organization = os.environ.get("OPENAI_ORG")
 
 DISTANCE_CUTOFF = 1.1
-truststore.inject_into_ssl()
-
-openai.verify_ssl_certs = False
+OpenAI.verify_ssl_certs = False
 
 # Suppress warnings and set pandas display options
 warnings.filterwarnings('ignore')
@@ -36,6 +34,8 @@ class Semantic_Search:
         Initializes the classifier by loading the dataset, building the Annoy index,
         and setting up the image recognizer.
         """
+        client = OpenAI(http_client=httpx.Client(verify=False))
+
         # Load the dataset and convert to a DataFrame
         dataset = load_dataset(dataset_name, split=split)
         self.df = pd.DataFrame(dataset)[:dataset_limit]
@@ -51,10 +51,12 @@ class Semantic_Search:
         """
         Get the OpenAI embedding for a given query.
         """
-        openai_output = openai.embeddings.create(
+        truststore.inject_into_ssl()
+        client = OpenAI(http_client=httpx.Client(verify=False))
+
+        openai_output = client.embeddings.create(
             input=query,
-            model="text-embedding-3-large",
-            verify=False
+            model="text-embedding-3-large"
         )
         return openai_output.data[0].embedding
 

@@ -63,8 +63,7 @@ class Animal:
                 model="gpt-4o",
                 input= prompt,
                 max_output_tokens=100,
-                temperature=1,
-                verify=False
+                temperature=1
             )
             description = response.output_text.strip()
             return description
@@ -159,7 +158,8 @@ class Animal:
 
 if __name__ == '__main__':
     # Example usage:
-    test_image = '/Users/edwardwang/Downloads/devil2.jpg'   # Update with the actual image path
+    test_image = 'C:/Users/icyzm/Downloads/testbird.jpeg'  # Update this path as needed
+
     animal_instance = Animal(test_image)
     print(animal_instance.species)
     print(animal_instance.get_type())
