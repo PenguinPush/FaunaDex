@@ -7,8 +7,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def is_animal(name):
-
-    # Keywords that indicate the object is an animal.
+    """
+    A simple heuristic to determine if the object name likely refers to an animal.
+    """
     animal_keywords = ["cat", "dog", "bird", "horse", "cow", "lion", "tiger", "bear",
                        "wolf", "squirrel", "monkey", "zebra", "giraffe", "elephant", "animal"]
     lower_name = name.lower()
@@ -19,16 +20,14 @@ def crop_to_animal(image_path):
     Detects objects in the image using the REST-based Google Vision API,
     filters for objects that appear to be animals using a simple heuristic,
     crops the image to the bounding box of the highest scoring animal,
-    and saves the cropped image.
+    and replaces the original image file with the cropped image.
 
     Args:
         image_path (str): Path to the input image.
-        output_path (str): Path to save the cropped image.
-
-    Returns:
-        PIL.Image.Image: The cropped image object, or None if no animal is detected.
     """
-    output_path = f"CroppedPhotos/{os.path.basename(image_path)}"
+    # Set output_path to be the same as the input image path
+    output_path = image_path
+
     # Retrieve your API key from environment variables.
     API_KEY = os.environ.get("GOOGLE_API_KEY")
     if not API_KEY:
@@ -63,7 +62,6 @@ def crop_to_animal(image_path):
 
     # Filter objects to only those that are likely animals.
     animal_objects = [obj for obj in objects if is_animal(obj.get('name', ''))]
-
     if not animal_objects:
         print("No animal detected in the image.")
         return None
@@ -90,8 +88,10 @@ def crop_to_animal(image_path):
 
     # Crop the image to the bounding box.
     cropped_image = pil_image.crop((left, top, right, bottom))
+
+    # Replace the original file with the cropped image.
     cropped_image.save(output_path)
-    print(f"Cropped image saved to {output_path}")
+    print(f"Cropped image replaced at {output_path}")
 
     return cropped_image
 
