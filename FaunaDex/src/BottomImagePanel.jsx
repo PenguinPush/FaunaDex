@@ -14,7 +14,15 @@ const BottomImagePanel = ({ animalText, src, playVideo, currentlyWaiting, setCat
           <div className="big-white-rectangle"></div>
           </>
         ) :  
-        currentlyWaiting ? <p className="info-text">Waiting for backend server...</p> : catchFailed ? (
+        currentlyWaiting ? 
+        (
+          <>
+          <p className="info-text">Waiting for backend server...</p> 
+          <div className="big-white-rectangle"></div>
+
+          </>
+        )
+        : catchFailed ? (
           <>
           <p className="info-text" onClick={() => { setCatchSuccess(false); setCatchFailed(false); playVideo()}}>
             Catch failed! There is no animal in the picture. Click here to continue.
