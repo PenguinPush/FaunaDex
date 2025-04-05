@@ -46,10 +46,10 @@ def upload():
 
     image.save(save_path)
     save_path_full = crop_to_animal(save_path)
-    upload_image(save_path, filename)
+    # upload_image(save_path, filename)
     print("a")
     print(save_path_full, filename_full)
-    upload_image(save_path_full, filename_full)
+    # upload_image(save_path_full, filename_full)
     print("b")
 
     animal_instance = Animal(save_path)
