@@ -58,7 +58,7 @@ class Animal:
 
 if __name__ == '__main__':
     # Example usage:
-    test_image = '/Users/edwardwang/Downloads/dog.jpg'  # Update with the actual image path
+    test_image = 'C:/Users/icyzm/Downloads/Bird-2-scaled.jpeg'   # Update with the actual image path
     animal_instance = Animal(test_image)
     print(animal_instance.species)
     print(animal_instance.get_species_info())
