@@ -60,5 +60,5 @@ if __name__ == '__main__':
     # Example usage:
     test_image = '/Users/edwardwang/Downloads/bobcat.jpeg'  # Update with the actual image path
     animal_instance = Animal(test_image)
-    print(animal_instance)
+    print(animal_instance.species)
     print(animal_instance.get_species_info())
