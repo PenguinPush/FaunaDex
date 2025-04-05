@@ -48,7 +48,7 @@
   object-fit: contain;
   position: absolute;
   top: 50%;   /* Center vertically in the panel */
-  left: 50%;  /* Center horizontally */
+  left: 51%;  /* Center horizontally */
   transform: translate(-50%, -50%);
 }
 
