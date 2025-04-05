@@ -21,9 +21,6 @@ def get_image(filename):
     image_path = os.path.join('uploads', filename)  # adjust path as needed
 
     if not os.path.exists(image_path):
-        return {"error": "File not found"}, 404
-
-    if not os.path.exists(image_path):
         fetch_image(filename)  # Fetch the image from cloud storage
 
     return send_file(image_path, mimetype='image/jpeg')  # adjust mimetype if needed
