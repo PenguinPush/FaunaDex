@@ -21,6 +21,7 @@ const BottomImagePanel = ({ src, setCatchSuccess, setCatchFailed, catchFailed, c
         ) : (
           <>
             <div className="red-rectangle"></div>
+            <div className="white-rectangle"></div>
             <img src={catchButton} onClick={takeImage} className="middle-image" />
             <img src={src} onClick={onClick} className="bottom-image" />
           </>

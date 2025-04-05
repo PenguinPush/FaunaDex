@@ -7,9 +7,10 @@ const Description = ({ name, title, timesCaught, description, image, onBack }) =
       <button className="back-button" onClick={onBack}>← Back</button>
 
       <div className="pokemon-description">
+        <h2 className="pokemon-name">{name}</h2>
         <img src={image} alt={name} className="pokemon-image" />
         <div className="pokemon-info">
-          <h2 className="pokemon-name">{name}</h2>
+          
           <p className="pokemon-title">{title}</p>
           <p className="pokemon-caught">Caught: {timesCaught} time{timesCaught !== 1 ? 's' : ''}</p>
           <p className="pokemon-title">{description}</p>

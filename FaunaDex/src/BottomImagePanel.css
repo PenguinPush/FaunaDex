@@ -33,4 +33,18 @@
     background-color: red;
     color: red;
     width: 100%;
+    border: 5px solid #000000;
+    box-sizing: border-box;
 }
+
+.white-rectangle {
+  height: 26%;
+  background-color: rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
+  width: 100%;
+  border: 5px solid #000000;
+  box-sizing: border-box;
+  position: absolute;
+  bottom: 0;
+}
+
