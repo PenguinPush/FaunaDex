@@ -21,7 +21,6 @@ DISTANCE_CUTOFF = 1.1
 truststore.inject_into_ssl()
 
 openai.verify_ssl_certs = False
-openai._default_client._client._session.verify = certifi.where()
 
 # Suppress warnings and set pandas display options
 warnings.filterwarnings('ignore')
