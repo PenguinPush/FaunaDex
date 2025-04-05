@@ -12,13 +12,13 @@ app = Flask(__name__)
 CORS(app)
 
 # Ensure the uploads folder exists
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = 'saves'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 @app.route('/uploads/<filename>', methods=['GET'])
 def get_image(filename):
-    image_path = os.path.join('uploads', filename)  # adjust path as needed
+    image_path = os.path.join(UPLOAD_FOLDER, filename)  # adjust path as needed
 
     if not os.path.exists(image_path):
         fetch_image(filename)  # Fetch the image from cloud storage

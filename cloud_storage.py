@@ -36,7 +36,7 @@ def fetch_image(filename):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(filename)
-    blob.download_to_filename(os.path.join('uploads', filename))
+    blob.download_to_filename(os.path.join('saves', filename))
 
     print(
         "Downloaded storage object {} from bucket {} to local file uploads/{}.".format(
