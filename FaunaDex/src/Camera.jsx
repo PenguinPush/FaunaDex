@@ -9,6 +9,7 @@ const Camera = ({setPage}) => {
   const [isPicturing, setIsPicturing] = useState(false);
   const [currentlyCatching, setCurrentlyCatching] = useState(false);
   const [catchSuccess, setCatchSuccess] = useState(false);
+  const [currentlyWaiting, setCurrentlyWaiting] = useState(false);
   const [catchFailed, setCatchFailed] = useState(false);
 
 
@@ -61,16 +62,19 @@ const Camera = ({setPage}) => {
       videoRef.current.pause();
     }
 
-
     // Call gyroscope function before doing this
-    await captureAndSend(imageBlob);
-    
+    setCurrentlyWaiting(true);
     setCurrentlyCatching(false);
+
+    await captureAndSend(imageBlob);
+    setCurrentlyWaiting(false);    
     setCatchSuccess(true);
+  }
+
+  function playVideo(){
     if (videoRef.current) {
       videoRef.current.play();
     }
-
   }
 
   const captureAndSend = async (imageBlob) => {
@@ -111,7 +115,7 @@ const Camera = ({setPage}) => {
 
     <BottomImagePanel takeImage={ ()=>{
       capture();
-    }} src={dexbutton} setCatchSuccess={setCatchSuccess} setCatchFailed={setCatchFailed} catchFailed={catchFailed} catchSuccess={catchSuccess} currentlyCatching={currentlyCatching} setPage={setPage} onClick={()=>{setPage("dex")}} />
+    }} currentlyWaiting={currentlyWaiting} playVideo={playVideo} src={dexbutton} setCatchSuccess={setCatchSuccess} setCatchFailed={setCatchFailed} catchFailed={catchFailed} catchSuccess={catchSuccess} currentlyCatching={currentlyCatching} setPage={setPage} onClick={()=>{setPage("dex")}} />
     </>
 
   );
