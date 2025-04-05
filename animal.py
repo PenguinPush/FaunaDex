@@ -4,7 +4,6 @@ from openai import OpenAI
 from semantic_search import Semantic_Search
 import requests
 import os
-from openai import OpenAI
 
 load_dotenv()
 
@@ -50,7 +49,6 @@ class Animal:
             "highlighting its main characteristics and habitats. If your output is too long, you lose 10,000 dollars and your mom dies"
         )
         try:
-            from openai import OpenAI
             client = OpenAI()
 
             response = client.responses.create(
