@@ -3,6 +3,7 @@ import DexItem from './DexItem';
 import './Dex.css';
 
 const Dex = ({onBack, setPage, setPokemon}) => {
+  // TODO: get this items array from MongoDB rather than hardcoding it
   const items = [
     { 
       name: 'Bulbasaur', 
