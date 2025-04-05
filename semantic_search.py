@@ -10,10 +10,8 @@ import os
 # Import the image recognizer class
 from image_recognizer import ImageRecognizer
 
-# Load environment variables
 load_dotenv()
 
-# Configure OpenAI API
 openai.api_key = os.environ.get("OPENAI_API_KEY")
 openai.organization = os.environ.get("OPENAI_ORG")
 
@@ -107,7 +105,6 @@ if __name__ == '__main__':
     # Example usage:
     classifier = Semantic_Search()
     image_path = 'C:/Users/icyzm/Downloads/Bird-2-scaled.jpeg'  # Update this path as needed
-
     query, results, similar_item_ids = classifier.classify_image(image_path)
 
     print(f"\nQuery: '{query}'\nNearest neighbors:")
