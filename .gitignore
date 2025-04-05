@@ -30,3 +30,4 @@ dist-ssr
 /.idea/
 __pycache__
 /uploads/
+/saves/
