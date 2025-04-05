@@ -11,7 +11,7 @@ const Camera = ({setPage}) => {
   const [catchSuccess, setCatchSuccess] = useState(false);
   const [currentlyWaiting, setCurrentlyWaiting] = useState(false);
   const [catchFailed, setCatchFailed] = useState(false);
-  const [animalCaught, setAnimalCaught] = useState("BUG");
+  const [animalCaught, setAnimalCaught] = useState("DEFAULT");
 
 
   const canvasRef = useRef(null); // hidden canvas for capturing image
@@ -83,31 +83,31 @@ const Camera = ({setPage}) => {
     const formData = new FormData();
     formData.append('image', imageBlob, 'snapshot.jpg');
 
-    try {
-      const response = await fetch('http://127.0.0.1:5050/upload', {
-        method: 'POST',
-        body: formData,
-      });
+    // try {
+    //   const response = await fetch('http://127.0.0.1:5050/upload', {
+    //     method: 'POST',
+    //     body: formData,
+    //   });
 
-      if (response.ok) {
-        const data = await response.json()
-        console.log(data.is_animal)
-        console.log('Image uploaded successfully');
-        if (!data.is_animal){
-          setCatchFailed(true); // TODO: do this if the backend returns that its bad
-        }
-        else {
-          setAnimalCaught(data.name);
-        }
+    //   if (response.ok) {
+    //     const data = await response.json()
+    //     console.log(data.is_animal)
+    //     console.log('Image uploaded successfully');
+    //     if (!data.is_animal){
+    //       setCatchFailed(true); // TODO: do this if the backend returns that its bad
+    //     }
+    //     else {
+    //       setAnimalCaught(data.name);
+    //     }
       
 
-      } else {
-        console.error('Upload failed');
+    //   } else {
+    //     console.error('Upload failed');
 
-      }
-    } catch (error) {
-      console.error('Error sending image to backend:', error);
-    }
+    //   }
+    // } catch (error) {
+    //   console.error('Error sending image to backend:', error);
+    // }
   };
 
   return (

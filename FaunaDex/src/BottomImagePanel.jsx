@@ -17,7 +17,7 @@ const BottomImagePanel = ({ animalText, src, playVideo, currentlyWaiting, setCat
           </p>
         ) : catchSuccess ? (
           <p onClick={() => { setPage("dex"); setCatchSuccess(false); setCatchFailed(false); playVideo()}}>
-            Catch successful: {animalText} ! Click to see it in your dex.
+            Catch successful: {animalText}! Click to see it in your dex.
           </p>
         ) : (
           <>
