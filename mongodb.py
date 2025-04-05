@@ -4,7 +4,6 @@ from datetime import datetime
 import os
 from dotenv import load_dotenv
 from json import loads
-from cropper import crop_to_animal
 
 load_dotenv()
 
@@ -17,7 +16,6 @@ collection = db["fauna_data"]
 
 
 def database_update(animal_instance, image_path):
-    crop_to_animal(image_path)
     try:
         existing_animal = collection.find_one({"name": animal_instance.species})
         is_new = False
