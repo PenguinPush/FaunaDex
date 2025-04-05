@@ -4,17 +4,18 @@ from semantic_search import Semantic_Search
 import requests
 import openai
 import os
+import certifi
 import truststore
 truststore.inject_into_ssl()
 
 load_dotenv()
 OpenAI.api_key = os.environ.get("OPENAI_API_KEY")
 OpenAI.organization = os.environ.get("OPENAI_ORG")
+
 DISTANCE_CUTOFF = 1.1
 
-openai.requestssession = requests.Session()
-openai.requestssession.verify = False  # disables SSL check
-
+openai.verify_ssl_certs = False
+openai._default_client._client._session.verify = certifi.where()
 class Animal:
     def __init__(self, image_path: str):
         """
