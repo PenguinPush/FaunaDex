@@ -11,6 +11,7 @@ const Camera = ({setPage}) => {
   const [catchSuccess, setCatchSuccess] = useState(false);
   const [currentlyWaiting, setCurrentlyWaiting] = useState(false);
   const [catchFailed, setCatchFailed] = useState(false);
+  const [animalCaught, setAnimalCaught] = useState("DEFAULT");
 
 
   const canvasRef = useRef(null); // hidden canvas for capturing image
@@ -95,6 +96,10 @@ const Camera = ({setPage}) => {
         if (!data.is_animal){
           setCatchFailed(true); // TODO: do this if the backend returns that its bad
         }
+        else {
+          setAnimalCaught(data.name);
+        }
+      
 
       } else {
         console.error('Upload failed');
@@ -119,7 +124,7 @@ const Camera = ({setPage}) => {
 
     <BottomImagePanel takeImage={ ()=>{
       capture();
-    }} currentlyWaiting={currentlyWaiting} playVideo={playVideo} src={dexbutton} setCatchSuccess={setCatchSuccess} setCatchFailed={setCatchFailed} catchFailed={catchFailed} catchSuccess={catchSuccess} currentlyCatching={currentlyCatching} setPage={setPage} onClick={()=>{setPage("dex")}} />
+    }} currentlyWaiting={currentlyWaiting} animalText={animalCaught} playVideo={playVideo} src={dexbutton} setCatchSuccess={setCatchSuccess} setCatchFailed={setCatchFailed} catchFailed={catchFailed} catchSuccess={catchSuccess} currentlyCatching={currentlyCatching} setPage={setPage} onClick={()=>{setPage("dex")}} />
     </>
 
   );
