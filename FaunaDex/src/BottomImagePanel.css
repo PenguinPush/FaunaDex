@@ -12,25 +12,21 @@
 
 /* New shading panel that uses your image */
 .shading-panel {
-  height: 100%;            /* Fills the entire .bottom-image-panel (i.e. 50vh) */
+  height: 100%;
   width: 100%;
-  background-image: url('./assets/Shading.png'); /* Adjust path if needed */
+  left: 0%;
+  background-image: url('./assets/Shading.png');
   background-size: cover;
-  background-position: center;
+  background-position: center top; /* Centers horizontally, aligns top vertically */
   border: 5px solid #000000;
   box-sizing: border-box;
   position: absolute;
   top: 0;
-  z-index: -1;             /* Ensures it sits behind other content */
+  z-index: -1;
 }
 
-/* You can remove these if they're no longer needed
-.red-rectangle { ... }
-.white-rectangle { ... }
-.big-white-rectangle { ... }
-*/
 
-/* Existing image and text styles */
+/* Center the bottom image horizontally */
 .bottom-image {
   height: auto;
   max-height: 50%;
@@ -39,7 +35,11 @@
   object-fit: contain;
   position: absolute;
   bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
 }
+
+/* Center the middle button (catch button) in the panel */
 .middle-image {
   height: auto;
   max-height: 75%;
@@ -47,8 +47,11 @@
   max-width: 75%;
   object-fit: contain;
   position: absolute;
-  bottom: 15vh;
+  top: 50%;   /* Center vertically in the panel */
+  left: 50%;  /* Center horizontally */
+  transform: translate(-50%, -50%);
 }
+
 .info-text {
   font-size: 25px;
   padding-left: 35px;
