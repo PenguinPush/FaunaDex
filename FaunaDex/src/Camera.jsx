@@ -29,6 +29,7 @@ const Camera = ({setPage}) => {
   function waitForGyroscope() {
     const accelerometer = new Accelerometer({ frequency: 60 });
     if (accelerometer == null){
+      console.log("NO ACCEL")
       return;
     }
     console.log(accelerometer);
@@ -40,9 +41,12 @@ const Camera = ({setPage}) => {
       });
     })
     accelerometer.start();
+    console.log(accelerometer);
+
 
     return new Promise((resolve) => {
       var checkInterval = setInterval(()=>{
+
         // console.log("checking accelerometer");
         if (!accelerometer.activated || (accelerometer.x + accelerometer.y) > 10){
           clearInterval(checkInterval);
