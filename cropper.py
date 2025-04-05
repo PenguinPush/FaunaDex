@@ -14,7 +14,7 @@ def is_animal(name):
     lower_name = name.lower()
     return any(keyword in lower_name for keyword in animal_keywords)
 
-def crop_to_animal(image_path, output_path="cropped_animal.jpg"):
+def crop_to_animal(image_path):
     """
     Detects objects in the image using the REST-based Google Vision API,
     filters for objects that appear to be animals using a simple heuristic,
@@ -28,6 +28,7 @@ def crop_to_animal(image_path, output_path="cropped_animal.jpg"):
     Returns:
         PIL.Image.Image: The cropped image object, or None if no animal is detected.
     """
+    output_path = f"CroppedPhotos/{os.path.basename(image_path)}"
     # Retrieve your API key from environment variables.
     API_KEY = os.environ.get("GOOGLE_API_KEY")
     if not API_KEY:
@@ -97,5 +98,4 @@ def crop_to_animal(image_path, output_path="cropped_animal.jpg"):
 if __name__ == '__main__':
     # Update with the path to your image.
     input_image_path = "/Users/edwardwang/Downloads/husky.webp"
-    output_image_path = "/Users/edwardwang/Documents/GitHub/FaunaDex/CroppedPhotos/croppedimage.png"
-    crop_to_animal(input_image_path, output_image_path)
+    crop_to_animal(input_image_path)
