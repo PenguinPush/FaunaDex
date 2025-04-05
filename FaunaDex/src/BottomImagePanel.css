@@ -34,3 +34,11 @@
     color: red;
     width: 100%;
 }
+
+.info-text {
+  font-size: 25px;
+  padding-left: 35px;
+  padding-right: 35px;
+  text-align: center;
+
+}
