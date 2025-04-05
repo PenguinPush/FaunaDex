@@ -11,8 +11,13 @@ def is_animal(name):
     """
     A simple heuristic to determine if the object name likely refers to an animal.
     """
-    animal_keywords = ["cat", "dog", "bird", "horse", "cow", "lion", "tiger", "bear",
-                       "wolf", "squirrel", "monkey", "zebra", "giraffe", "elephant", "animal"]
+    animal_keywords  = [
+    "cat", "dog", "bird", "horse", "cow", "lion", "tiger", "bear", "shark",
+    "wolf", "fish", "squirrel", "monkey", "zebra", "giraffe", "elephant", "animal",
+    "deer", "rabbit", "fox", "goat", "pig", "sheep", "chicken", "duck", "frog",
+    "mouse", "rat", "camel", "kangaroo", "panda", "leopard", "dolphin", "seal"
+]
+
     lower_name = name.lower()
     return any(keyword in lower_name for keyword in animal_keywords)
 
@@ -125,5 +130,5 @@ def crop_to_animal(image_path, margin_ratio=0.1):
 
 if __name__ == '__main__':
     # Update with the path to your image.
-    input_image_path = "/Users/edwardwang/Downloads/deer.webp"
+    input_image_path = "/Users/edwardwang/Downloads/gura.jpg"
     crop_to_animal(input_image_path)
