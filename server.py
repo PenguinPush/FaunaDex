@@ -47,7 +47,10 @@ def upload():
     try:
         image.save(save_path)
         crop_to_animal(save_path)
+        name, ext = os.path.splitext(save_path)
+        full_version_path = os.path.join(save_path, f"{name}_Full{ext}")
         upload_image(save_path, filename)
+        upload_image(full_version_path, filename)
 
         animal_instance = Animal(save_path)
 
