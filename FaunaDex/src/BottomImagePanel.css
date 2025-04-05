@@ -53,6 +53,19 @@
   bottom: 0;
 }
 
+.big-white-rectangle {
+  height: 100%;
+  background-color: rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
+  width: 100%;
+  border: 5px solid #000000;
+  box-sizing: border-box;
+  position: absolute;
+  z-index: -1;
+  bottom: 0;
+}
+
+
 
 .info-text {
   font-size: 25px;
