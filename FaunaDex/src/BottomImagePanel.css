@@ -5,21 +5,20 @@
   width: 100vw;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Push content to bottom */
+  justify-content: flex-end;
   align-items: center;
   background-color: transparent;
   position: absolute;
   bottom: 0;
 }
 
-/* New shading panel that uses your image */
 .shading-panel {
   height: 100%;
   width: 100%;
   left: 0%;
   background-image: url('./assets/Shading.png');
   background-size: cover;
-  background-position: center top; /* Centers horizontally, aligns top vertically */
+  background-position: center top;
   border: 5px solid #000000;
   box-sizing: border-box;
   position: absolute;
@@ -27,7 +26,6 @@
   z-index: -1;
 }
 
-/* Center the bottom image horizontally */
 .bottom-image {
   height: auto;
   max-height: 50%;
@@ -40,7 +38,6 @@
   transform: translateX(-50%);
 }
 
-/* Center the middle button (catch button) in the panel */
 .middle-image {
   height: auto;
   max-height: 75%;
@@ -48,8 +45,8 @@
   max-width: 75%;
   object-fit: contain;
   position: absolute;
-  top: 50%;   /* Center vertically in the panel */
-  left: 51%;  /* Center horizontally */
+  top: 50%;
+  left: 51%;
   transform: translate(-50%, -50%);
 }
 
@@ -60,7 +57,7 @@
   text-align: center;
   position: absolute;
   top: 12.5vh;
-  font-family: 'Pixelify Sans', cursive; /* Pixelated font applied here */
+  font-family: 'Pixelify Sans', cursive;
 }
 
 .white-text {
@@ -70,6 +67,6 @@
   text-align: center;
   position: absolute;
   top: 12.5vh;
-  font-family: 'Pixelify Sans', cursive; /* Pixelated font applied here */
+  font-family: 'Pixelify Sans', cursive;
   color: white;
 }

@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
 
 body {
-  /* Optional global styling for a retro vibe */
   font-family: 'Pixelify Sans', cursive;
   margin: 0;
   padding: 0;
@@ -35,7 +34,6 @@ body {
   background: #ffdb4d;
 }
 
-/* Use CSS Grid for a flexible, modern layout */
 .dex-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
