@@ -8,12 +8,12 @@ load_dotenv()
 
 
 def is_animal(name):
-    animal_keywords  = [
-    "cat", "dog", "bird", "horse", "cow", "lion", "tiger", "bear", "shark",
-    "wolf", "fish", "squirrel", "monkey", "zebra", "giraffe", "elephant", "animal",
-    "deer", "rabbit", "fox", "goat", "pig", "sheep", "chicken", "duck", "frog",
-    "mouse", "rat", "camel", "kangaroo", "panda", "leopard", "dolphin", "seal"
-]
+    animal_keywords = [
+        "cat", "dog", "bird", "horse", "cow", "lion", "tiger", "bear", "shark",
+        "wolf", "fish", "squirrel", "monkey", "zebra", "giraffe", "elephant", "animal",
+        "deer", "rabbit", "fox", "goat", "pig", "sheep", "chicken", "duck", "frog",
+        "mouse", "rat", "camel", "kangaroo", "panda", "leopard", "dolphin", "seal"
+    ]
 
     lower_name = name.lower()
     return any(keyword in lower_name for keyword in animal_keywords)
