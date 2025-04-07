@@ -8,10 +8,10 @@ body {
 }
 
 .dex-container {
-  padding: 2rem;
-  margin: 2rem auto;
-  max-width: 1200px;
-  position: relative;
+  height: 100%;
+  top: 0;
+  width: 100%;
+  position: fixed;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);

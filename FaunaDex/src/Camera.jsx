@@ -48,7 +48,7 @@ const Camera = ({setPage}) => {
       var checkInterval = setInterval(()=>{
 
         // console.log("checking accelerometer");
-        if (!accelerometer.activated || (accelerometer.x + accelerometer.y) > 10){
+        if (!accelerometer.activated || (accelerometer.x + accelerometer.y) > 5){
           clearInterval(checkInterval);
           removeEventListener(accelerometer, accelListener);
           resolve();
@@ -126,7 +126,7 @@ const Camera = ({setPage}) => {
     formData.append('image', imageBlob, 'snapshot.jpg');
 
     try {
-      const response = await fetch('http://127.0.0.1:5050/upload', {
+      const response = await fetch('http://localhost:5050/upload', {
         method: 'POST',
         body: formData,
       });

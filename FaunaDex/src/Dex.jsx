@@ -9,7 +9,7 @@ const Dex = ({ onBack, setPage, setPokemon }) => {
     const fetchData = async () => {
       try {
 
-        const response = await fetch('http://127.0.0.1:5050/get_dex');
+        const response = await fetch('http://localhost:5050/get_dex');
         console.log("fetching");
         const result = await response.json();
         if (result.status === 'success') {
@@ -36,7 +36,7 @@ const Dex = ({ onBack, setPage, setPokemon }) => {
         {items.map((item, index) => (
           <DexItem
             key={index}
-            image={"http://127.0.0.1:5050/" + item.image_path}
+            image={"http://localhost:5050/" + item.image_path}
             name={item.name}
             onClick={() => {
               handleItemClick(item.name);
