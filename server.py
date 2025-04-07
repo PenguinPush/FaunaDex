@@ -6,7 +6,6 @@ from animal import Animal
 from mongodb import database_update, database_fetch
 from cloud_storage import upload_image, fetch_image
 from cropper import crop_to_animal
-from OpenSSL import SSL
 
 
 app = Flask(__name__)
@@ -71,4 +70,4 @@ def get_dex():
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5050))
-    app.run(host='0.0.0.0', port=5050, debug=True, ssl_context='adhoc')
+    app.run(host='0.0.0.0', port=5050, debug=True)
