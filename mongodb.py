@@ -8,7 +8,8 @@ from json import loads
 load_dotenv()
 
 db_password = os.environ.get("MONGODB_PASSWORD")
-mongo_url = "mongodb+srv://mongoauth:" + db_password + "@cluster0.6lsnmgv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+mongo_url = "mongodb+srv://mongoauth:" + db_password + "@cluster0.6lsnmgv.mongodb.net/?retryWrites=true&w=majority" \
+                                                       "&appName=Cluster0 "
 
 client = MongoClient(mongo_url)
 db = client["fauna"]

@@ -17,6 +17,7 @@ truststore.inject_into_ssl()
 
 openai.verify_ssl_certs = False
 
+
 class Animal:
     def __init__(self, image_path: str):
         self.image_path = image_path
@@ -38,15 +39,17 @@ class Animal:
         if self.species == "NOT AN ANIMAL":
             return "species is not an animal"
         prompt = (
-            f"You are a zoology expert. Provide a short, two sentence very concise description of the animal species '{self.species}', "
-            "highlighting its main characteristics and habitats. If your output is too long, you lose 10,000 dollars and your mom dies"
+            f"You are a zoology expert. Provide a short, two sentence very concise description of the animal species '"
+            f"{self.species}', "
+            "highlighting its main characteristics and habitats. If your output is too long, you lose 100,000 dollars "
+            "and your mom dies "
         )
         try:
-            client = OpenAI(http_client = httpx.Client(verify=False))
+            client = OpenAI(http_client=httpx.Client(verify=False))
 
             response = client.responses.create(
                 model="gpt-4o",
-                input= prompt,
+                input=prompt,
                 max_output_tokens=100,
                 temperature=1
             )
@@ -131,7 +134,7 @@ class Animal:
             reasoning={},
             tools=[],
             temperature=1,
-            max_output_tokens=2048,
+            max_output_tokens=50,
             top_p=1,
             store=True
         )
