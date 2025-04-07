@@ -55,7 +55,7 @@ def database_fetch():
     try:
         fauna_data = list(collection.find({}))
         for animal in fauna_data:
-            animal["_id"] = str(animal["_id"])  # Convert ObjectId to string for JSON serialization
+            animal["_id"] = str(animal["_id"])
         return {"status": "success", "data": fauna_data}
     except Exception as e:
         return {"status": "error", "message": str(e)}

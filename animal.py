@@ -19,21 +19,11 @@ openai.verify_ssl_certs = False
 
 class Animal:
     def __init__(self, image_path: str):
-        """
-        Initialize an Animal instance by processing the given image to determine its species.
-
-        Args:
-            image_path (str): The file path to the image of the animal.
-        """
         self.image_path = image_path
         self.species = None
         self._classify_image()
 
     def _classify_image(self):
-        """
-        method to classify the animal in the image using AnimalClassifier.
-        sets the species property based on the semantic search results.
-        """
         classifier = Semantic_Search()
 
         query, results, similar_item_ids = classifier.classify_image(self.image_path)
@@ -45,11 +35,6 @@ class Animal:
         print(f"Image processed. Derived species: {self.species}")
 
     def get_species_info(self):
-        """
-
-        Returns:
-            str: A string with information about the species.
-        """
         if self.species == "NOT AN ANIMAL":
             return "species is not an animal"
         prompt = (

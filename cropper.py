@@ -8,9 +8,6 @@ load_dotenv()
 
 
 def is_animal(name):
-    """
-    A simple heuristic to determine if the object name likely refers to an animal.
-    """
     animal_keywords  = [
     "cat", "dog", "bird", "horse", "cow", "lion", "tiger", "bear", "shark",
     "wolf", "fish", "squirrel", "monkey", "zebra", "giraffe", "elephant", "animal",
@@ -23,18 +20,6 @@ def is_animal(name):
 
 
 def crop_to_animal(image_path, margin_ratio=0.1):
-    """
-    Detects objects in the image using the REST-based Google Vision API,
-    filters for objects that appear to be animals using a simple heuristic,
-    crops the image to the bounding box of the highest scoring animal with extra margin,
-    saves the uncropped image as "imagename_Full.ext", and replaces the original image
-    with the cropped version.
-
-    Args:
-        image_path (str): Path to the input image.
-        margin_ratio (float): Ratio of the bounding box dimensions to use as margin.
-    """
-    # Parse the file name and directory.
     directory = os.path.dirname(image_path)
     base_name = os.path.basename(image_path)
     name, ext = os.path.splitext(base_name)
@@ -45,21 +30,16 @@ def crop_to_animal(image_path, margin_ratio=0.1):
     original_image.save(full_version_path)
     print(f"Saved full image as {full_version_path}")
 
-    # Use the original file for processing.
-    # Retrieve your API key from environment variables.
     API_KEY = os.environ.get("GOOGLE_API_KEY")
     if not API_KEY:
-        raise ValueError("GOOGLE_API_KEY environment variable not set.")
+        raise ValueError("api key missing!")
 
-    # Build the Vision API service using the REST client.
     service = build('vision', 'v1', developerKey=API_KEY)
 
-    # Read and encode the image to base64.
     with open(image_path, "rb") as image_file:
         content = image_file.read()
     encoded_image = base64.b64encode(content).decode("UTF-8")
 
-    # Prepare the request body for object localization.
     request_body = {
         "requests": [
             {
@@ -69,7 +49,6 @@ def crop_to_animal(image_path, margin_ratio=0.1):
         ]
     }
 
-    # Call the Vision API.
     response = service.images().annotate(body=request_body).execute()
 
     # Retrieve the localized object annotations from the response.
@@ -91,7 +70,6 @@ def crop_to_animal(image_path, margin_ratio=0.1):
     # Retrieve normalized vertices from the bounding polygon.
     vertices = primary_animal['boundingPoly']['normalizedVertices']
 
-    # Open the image with Pillow to obtain its dimensions.
     pil_image = Image.open(image_path)
     width, height = pil_image.size
 
@@ -110,7 +88,6 @@ def crop_to_animal(image_path, margin_ratio=0.1):
     margin_x = int(bbox_width * margin_ratio)
     margin_y = int(bbox_height * margin_ratio)
 
-    # Expand the bounding box by the margin, ensuring not to exceed image boundaries.
     new_left = max(0, left - margin_x)
     new_top = max(0, top - margin_y)
     new_right = min(width, right + margin_x)
@@ -118,10 +95,8 @@ def crop_to_animal(image_path, margin_ratio=0.1):
     print(
         f"Adjusted cropping coordinates with margin: left={new_left}, top={new_top}, right={new_right}, bottom={new_bottom}")
 
-    # Crop the image to the new bounding box.
     cropped_image = pil_image.crop((new_left, new_top, new_right, new_bottom))
 
-    # Replace the original file with the cropped image.
     cropped_image.save(image_path)
     print(f"Cropped image replaced at {image_path}")
 
