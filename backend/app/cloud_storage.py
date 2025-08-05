@@ -1,5 +1,6 @@
+import posixpath
+
 from google.cloud import storage
-import os
 
 
 def upload_image(source_file_name, destination_blob_name):
@@ -22,7 +23,7 @@ def fetch_image(filename):
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(filename)
-    blob.download_to_filename(os.path.join('uploads', filename))
+    blob.download_to_filename(posixpath.join('uploads', filename))
 
     print(
         "Downloaded storage object {} from bucket {} to local file uploads/{}.".format(

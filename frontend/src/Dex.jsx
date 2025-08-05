@@ -23,16 +23,16 @@ const Dex = ({onBack, setPage, setPokemon}) => {
     }, []);
 
 
-    return (<div className="bg-white/90 w-full h-full overflow-y-scroll">
+    return (<div className="bg-white/90 w-full h-full overflow-y-scroll flex flex-col items-center p-4">
         <button
-            className="absolute top-6 left-6 bg-yellow-400 border-none text-lg px-4 py-2 rounded-md cursor-pointer transition-colors duration-300 hover:bg-yellow-300"
+            className="text-lg font-bold text-blue-500 hover:text-blue-700 mb-4"
             onClick={onBack}
         >
             ← Back
         </button>
         <div className="w-full h-full rounded-lg">
             <div
-                className="grid w-full grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 p-4">
+                className="grid w-full grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-x-4 gap-y-3">
                 {dexEntries.map((entry, index) => (
                     <DexItem
                         key={index}

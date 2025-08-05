@@ -1,5 +1,7 @@
 import os
 import base64
+import posixpath
+
 from googleapiclient.discovery import build
 from PIL import Image
 from dotenv import load_dotenv
@@ -20,12 +22,12 @@ def is_animal(name):
 
 
 def crop_to_animal(image_path, margin_ratio=0.1):
-    directory = os.path.dirname(image_path)
-    base_name = os.path.basename(image_path)
-    name, ext = os.path.splitext(base_name)
+    directory = posixpath.dirname(image_path)
+    base_name = posixpath.basename(image_path)
+    name, ext = posixpath.splitext(base_name)
 
     # Save the original image as the full version.
-    full_version_path = os.path.join(directory, f"{name}_Full{ext}")
+    full_version_path = posixpath.join(directory, f"{name}_Full{ext}")
     original_image = Image.open(image_path)
     original_image.save(full_version_path)
     print(f"Saved full image as {full_version_path}")

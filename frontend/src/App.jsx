@@ -11,7 +11,7 @@ function App() {
 
     return (<>
         <div className="flex justify-center overflow-hidden h-screen w-screen font-pixelify-sans">
-            <div className="w-[700px]">
+            <div className="w-[500px]">
                 {page === "description" ? <Description onBack={() => {
                         setPage("dex")
                     }}

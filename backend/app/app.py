@@ -1,6 +1,7 @@
 import os
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
+import posixpath
 from datetime import datetime
 from backend.app.animal import Animal
 from backend.app.mongodb import database_update, database_fetch
@@ -18,9 +19,9 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route('/uploads/<filename>', methods=['GET'])
 def get_image(filename):
-    image_path = os.path.join(UPLOAD_FOLDER, filename)  # adjust path as needed
+    image_path = posixpath.join(UPLOAD_FOLDER, filename)  # adjust path as needed
 
-    if not os.path.exists(image_path):
+    if not posixpath.exists(image_path):
         return send_file('../../placeholder.png', mimetype='image/jpeg')
         # fetch_image(filename)  # Fetch the image from cloud storage
 
@@ -40,8 +41,8 @@ def upload():
     # Optional: create a unique filename
     timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
     filename = f"{timestamp}_{image.filename}"
-    save_path = os.path.join(UPLOAD_FOLDER, filename)
-    name, ext = os.path.splitext(filename)
+    save_path = posixpath.join(UPLOAD_FOLDER, filename)
+    name, ext = posixpath.splitext(filename)
     filename_full = f"{name}_Full{ext}"
 
     image.save(save_path)
