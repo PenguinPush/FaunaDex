@@ -23,7 +23,7 @@ const Dex = ({onBack, setPage, setPokemon}) => {
     }, []);
 
 
-    return (<div className="bg-white/90 w-full h-full">
+    return (<div className="bg-white/90 w-full h-full overflow-y-scroll">
         <button
             className="absolute top-6 left-6 bg-yellow-400 border-none text-lg px-4 py-2 rounded-md cursor-pointer transition-colors duration-300 hover:bg-yellow-300"
             onClick={onBack}

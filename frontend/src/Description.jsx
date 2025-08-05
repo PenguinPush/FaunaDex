@@ -1,22 +1,30 @@
 import React from 'react';
-import './Description.css';
 
 const Description = ({ title, timesCaught, description, image, onBack }) => {
   return (
-    <div className="pokemon-description-page">
-      <button className="back-button" onClick={onBack}>← Back</button>
-      <div className="pokemon-description">
-        <div className="background-rectangle">
-          <img src={image} alt={title} className="background-image" />
+    <div className="flex flex-col items-center p-4 h-screen bg-gray-100">
+      <button
+        className="text-lg font-bold text-blue-500 hover:text-blue-700 mb-4"
+        onClick={onBack}
+      >
+        ← Back
+      </button>
+      <div className="flex flex-col items-center bg-white shadow-lg rounded-lg p-6">
+        <div className="relative w-full h-64 mb-4">
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover rounded-lg"
+          />
         </div>
-        <div className="pokemon-caught-position">
+        <div className="text-gray-700 text-sm mb-2">
           Caught: {timesCaught} time{timesCaught !== 1 ? 's' : ''}
         </div>
-        <div className="Lgray-rectangle"></div>
-        <div className="gray-rectangle"></div>
-        <div className="pokemon-info">
-          <p className="pokemon-title">{title}</p>
-          <p className="pokemon-title">{description}</p>
+        <div className="w-full h-2 bg-gray-300 rounded-lg mb-2"></div>
+        <div className="w-full h-2 bg-gray-400 rounded-lg mb-4"></div>
+        <div className="text-center">
+          <p className="text-xl font-bold text-gray-800 mb-2">{title}</p>
+          <p className="text-base text-gray-600">{description}</p>
         </div>
       </div>
     </div>
