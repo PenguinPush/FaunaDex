@@ -1,19 +1,15 @@
 from dotenv import load_dotenv
 from openai import OpenAI
-from semantic_search import Semantic_Search
+from semantic_search import SemanticSearch
 import requests
 import openai
 import os
-import certifi
-import truststore
-import httpx
 
 load_dotenv()
 OpenAI.api_key = os.environ.get("OPENAI_API_KEY")
 OpenAI.organization = os.environ.get("OPENAI_ORG")
 
 DISTANCE_CUTOFF = 1.1
-truststore.inject_into_ssl()
 
 openai.verify_ssl_certs = False
 
@@ -25,7 +21,7 @@ class Animal:
         self._classify_image()
 
     def _classify_image(self):
-        classifier = Semantic_Search()
+        classifier = SemanticSearch()
 
         query, results, similar_item_ids = classifier.classify_image(self.image_path)
         print("distance: ", similar_item_ids[1][0])
@@ -45,7 +41,7 @@ class Animal:
             "and your mom dies "
         )
         try:
-            client = OpenAI(http_client=httpx.Client(verify=False))
+            client = OpenAI()
 
             response = client.responses.create(
                 model="gpt-4o",

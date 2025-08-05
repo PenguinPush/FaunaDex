@@ -1,18 +1,18 @@
-from flask import Flask, request, jsonify, send_file
 import os
-from datetime import datetime
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
-from animal import Animal
-from mongodb import database_update, database_fetch
-from cloud_storage import upload_image, fetch_image
-from cropper import crop_to_animal
+from datetime import datetime
+from backend.app.animal import Animal
+from backend.app.mongodb import database_update, database_fetch
+from backend.app.cloud_storage import fetch_image
+from backend.app.cropper import crop_to_animal
 
 
-app = Flask(__name__)
-CORS(app)
+app = Flask(__name__, static_folder='../frontend/dist')
+CORS(app);
 
 # Ensure the uploads folder exists
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = '../uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
@@ -21,7 +21,8 @@ def get_image(filename):
     image_path = os.path.join(UPLOAD_FOLDER, filename)  # adjust path as needed
 
     if not os.path.exists(image_path):
-        fetch_image(filename)  # Fetch the image from cloud storage
+        return send_file('../../placeholder.png', mimetype='image/jpeg')
+        # fetch_image(filename)  # Fetch the image from cloud storage
 
     return send_file(image_path, mimetype='image/jpeg')  # adjust mimetype if needed
 

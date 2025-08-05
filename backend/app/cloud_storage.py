@@ -1,9 +1,10 @@
 from google.cloud import storage
 import os
 
+
 def upload_image(source_file_name, destination_blob_name):
     storage_client = storage.Client()
-    bucket = storage_client.bucket("faunadex-storage")
+    bucket = storage_client.bucket("frontend-storage")
     blob = bucket.blob(destination_blob_name)
     generation_match_precondition = 0
 
@@ -15,7 +16,7 @@ def upload_image(source_file_name, destination_blob_name):
 
 
 def fetch_image(filename):
-    bucket_name = "faunadex-storage"
+    bucket_name = "frontend-storage"
     print("fetching!")
 
     storage_client = storage.Client()
@@ -28,4 +29,3 @@ def fetch_image(filename):
             filename, bucket_name, filename
         )
     )
-

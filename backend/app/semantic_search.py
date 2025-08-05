@@ -1,14 +1,10 @@
 from openai import OpenAI
-import numpy as np
 import pandas as pd
 from datasets import load_dataset
 from annoy import AnnoyIndex
 import warnings
 from dotenv import load_dotenv
 import os
-import truststore
-import httpx
-
 # Import the image recognizer class
 from image_recognizer import ImageRecognizer
 
@@ -18,7 +14,6 @@ OpenAI.api_key = os.environ.get("OPENAI_API_KEY")
 OpenAI.organization = os.environ.get("OPENAI_ORG")
 
 DISTANCE_CUTOFF = 1.1
-OpenAI.verify_ssl_certs = False
 
 warnings.filterwarnings('ignore')
 pd.set_option('display.max_colwidth', None)
@@ -26,10 +21,9 @@ pd.set_option('display.max_columns', None)
 pd.set_option('display.width', None)
 
 
-class Semantic_Search:
+class SemanticSearch:
     def __init__(self, dataset_name="PenguinPush/animals-large", split="train",
-                 dataset_limit=3159, annoy_index_path='embeds/embeds-openai-large-gen3.ann'):
-
+                 dataset_limit=3159, annoy_index_path='backend/embeds/embeds-openai-large-gen3.ann'):
         dataset = load_dataset(dataset_name, split=split)
         self.df = pd.DataFrame(dataset)[:dataset_limit]
 
@@ -39,8 +33,7 @@ class Semantic_Search:
         self.recognizer = ImageRecognizer()
 
     def get_embedding(self, query: str):
-        truststore.inject_into_ssl()
-        client = OpenAI(http_client=httpx.Client(verify=False))
+        client = OpenAI()
 
         openai_output = client.embeddings.create(
             input=query,
@@ -71,7 +64,7 @@ class Semantic_Search:
 
 
 if __name__ == '__main__':
-    classifier = Semantic_Search()
+    classifier = SemanticSearch()
     image_path = 'C:/Users/icyzm/Downloads/testbird.jpeg'  # Update this path as needed
     query, results, similar_item_ids = classifier.classify_image(image_path)
 
