@@ -1,5 +1,7 @@
 import logging
 import warnings
+from contextlib import closing
+from threading import Lock
 from time import perf_counter
 
 import numpy as np
@@ -25,12 +27,52 @@ pd.set_option("display.max_columns", None)
 pd.set_option("display.width", None)
 
 
+def normalized_snapshot(store, limit=None):
+    ids, names, embeddings = store.snapshot(limit)
+    # Normalize in place and avoid a matrix-sized temporary for the norms.
+    norms = np.sqrt(np.einsum("ij,ij->i", embeddings, embeddings))
+    embeddings /= norms[:, None]
+    embeddings.setflags(write=False)
+    return tuple(ids), tuple(names), embeddings
+
+
+class EmbeddingSnapshotCache:
+    """One latest snapshot per app; existing requests can finish on the old one.
+
+    The store is append-only. Count and maximum ID detect committed additions.
+    Loading is serialized so concurrent requests never build duplicate snapshots.
+    """
+
+    def __init__(self):
+        self._lock = Lock()
+        self._key = None
+        self._snapshot = None
+
+    def get(self, store, limit=None):
+        with self._lock:
+            with closing(store._connect()) as db:
+                version = tuple(
+                    db.execute("SELECT COUNT(*), MAX(id) FROM animals").fetchone()
+                )
+            key = (store.path.resolve(), store.model, store.dimensions, limit, version)
+            if key != self._key:
+                snapshot = normalized_snapshot(store, limit)
+                self._snapshot = snapshot
+                self._key = key
+            return self._snapshot
+
+
 class SemanticSearch:
     def __init__(
-        self, store_path=DEFAULT_STORE_PATH, dataset_limit=None, recognizer=None
+        self,
+        store_path=DEFAULT_STORE_PATH,
+        dataset_limit=None,
+        recognizer=None,
+        snapshot_cache=None,
     ):
         self.store = AnimalEmbeddingStore(store_path)
         self.dataset_limit = dataset_limit
+        self.snapshot_cache = snapshot_cache
         self.reload_embeddings()
         self.recognizer = recognizer
         self.last_query_vector = None
@@ -38,8 +80,8 @@ class SemanticSearch:
     def reload_embeddings(self):
         """Load committed additions without restarting this search instance."""
         started = perf_counter()
-        ids, names, embeddings = self.store.snapshot(self.dataset_limit)
-        normalized = embeddings / np.linalg.norm(embeddings, axis=1)[:, None]
+        loader = self.snapshot_cache.get if self.snapshot_cache else normalized_snapshot
+        ids, names, normalized = loader(self.store, self.dataset_limit)
         self.df = pd.DataFrame({"animals": names}, index=ids)
         self.embeddings = normalized
         logger.info(

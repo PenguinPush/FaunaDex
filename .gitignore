@@ -38,5 +38,6 @@ __pycache__
 /demo/.next/
 /demo/out/
 /demo/tests
-/backend/tests
+/backend/tests/*
+!/backend/tests/test_embedding_snapshot.py
 AGENTS.md

@@ -17,7 +17,11 @@ from werkzeug.exceptions import HTTPException
 
 from backend.app.embedding_store import DEFAULT_STORE_PATH, AnimalEmbeddingStore
 from backend.app.image_recognizer import GeminiBillingError
-from backend.app.semantic_search import DISTANCE_CUTOFF, SemanticSearch
+from backend.app.semantic_search import (
+    DISTANCE_CUTOFF,
+    EmbeddingSnapshotCache,
+    SemanticSearch,
+)
 from backend.demo.collection_graph import CollectionGraph
 from backend.demo.demo_cache import cached_demo
 from backend.demo.neighbor_graph import neighbor_graph
@@ -47,12 +51,18 @@ def demo_image_bytes(path, modified_ns):
 
 
 def create_app(store_path=None):
-    store_path = Path(store_path or os.getenv("EMBEDDING_STORE_PATH") or DEFAULT_STORE_PATH)
+    store_path = Path(
+        store_path or os.getenv("EMBEDDING_STORE_PATH") or DEFAULT_STORE_PATH
+    )
     app = Flask(__name__, static_folder=None)
     app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
     lock = Lock()
     graph_lock = Lock()
     graph_cache = {}
+    snapshots = EmbeddingSnapshotCache()
+
+    def search_engine():
+        return SemanticSearch(store_path=store_path, snapshot_cache=snapshots)
 
     @app.get("/healthz")
     def health():
@@ -62,16 +72,10 @@ def create_app(store_path=None):
 
     def collection():
         with graph_lock:
-            store = AnimalEmbeddingStore(store_path)
-            with closing(store._connect()) as db:
-                version = tuple(
-                    db.execute("SELECT COUNT(*), MAX(id) FROM animals").fetchone()
-                )
-            if graph_cache.get("version") != version:
-                graph_cache["graph"] = CollectionGraph(
-                    SemanticSearch(store_path=store_path)
-                )
-                graph_cache["version"] = version
+            engine = search_engine()
+            if graph_cache.get("vectors") is not engine.embeddings:
+                graph_cache["graph"] = CollectionGraph(engine)
+                graph_cache["vectors"] = engine.embeddings
             return graph_cache["graph"]
 
     @app.get("/api/graph")
@@ -107,7 +111,7 @@ def create_app(store_path=None):
             return jsonify(error="Choose a match count between 1 and 20."), 400
         if not 1 <= count <= 20:
             return jsonify(error="Choose a match count between 1 and 20."), 400
-        engine = SemanticSearch(store_path=store_path)
+        engine = search_engine()
         upload = request.files.get("image")
         demo = request.form.get("demo")
         if demo:
@@ -165,7 +169,7 @@ def create_app(store_path=None):
     @app.get("/api/neighbors/<int:animal_id>")
     def neighbors(animal_id):
         # Explore an existing vector directly: no provider requests or re-embedding.
-        engine = SemanticSearch(store_path=store_path)
+        engine = search_engine()
         if animal_id not in engine.df.index:
             abort(404)
         try:
