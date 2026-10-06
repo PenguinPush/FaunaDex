@@ -1,6 +1,6 @@
 export default function Header() {
   return (
-    <header className="masthead shrink-0 flex items-center justify-between gap-8 mb-[22px] motion-safe:animate-bounce-in-right max-lg:items-start max-lg:gap-3.5 max-lg:flex-col max-lg:mb-5 lg:[@media(max-height:760px)]:mb-3.5">
+    <header className="shrink-0 flex items-center justify-center gap-8 mb-[22px] motion-safe:animate-bounce-in-right max-lg:items-start max-lg:gap-3.5 max-lg:flex-col max-lg:mb-5 lg:[@media(max-height:760px)]:mb-3.5">
       <div className="brand flex items-center gap-4">
         <img
           className="dex-mark block shrink-0 size-[42px] object-contain [image-rendering:pixelated] rounded-none"

@@ -8,6 +8,7 @@ import Graph from "graphology";
 import Sigma from "sigma";
 import { animateLayout } from "./layout-transition.js";
 import { createCursorSpacing } from "./cursor-spacing.js";
+import { scopeGraphInput } from "./graph-input.js";
 import {
   cosineDistance,
   inverseLogRadius,
@@ -65,19 +66,28 @@ export function createNeighborGraph(root, DemoMotion) {
   let spacing,
     radial = false,
     rings,
+    releaseInput,
     cancelTransition,
     transitioning = false;
   const collectionPositions = new Map();
   const centerKey = () =>
     queryPoint?.animal_id != null ? String(queryPoint.animal_id) : "query";
 
+  let ringView = "";
   function drawRings() {
     if (!rings || !renderer) return;
-    rings.replaceChildren();
     rings.style.display = radial && !transitioning ? "block" : "none";
-    if (!radial || transitioning) return;
+    if (!radial || transitioning) {
+      ringView = "";
+      return;
+    }
     const ns = "http://www.w3.org/2000/svg";
     const center = renderer.graphToViewport({ x: 0, y: 0 });
+    const outer = renderer.graphToViewport({ x: 1, y: 0 });
+    const view = `${center.x},${center.y},${outer.x},${outer.y}`;
+    if (view === ringView) return;
+    ringView = view;
+    rings.replaceChildren();
     for (const distance of [0, 0.5, 0.7, 0.85, 1]) {
       const edge = renderer.graphToViewport({
         x: inverseLogRadius(distance),
@@ -314,6 +324,7 @@ export function createNeighborGraph(root, DemoMotion) {
       transitioning = false;
       spacing?.destroy();
       spacing = null;
+      releaseInput?.();
       renderer?.kill();
       renderer = null;
       rings?.remove();
@@ -396,6 +407,8 @@ export function createNeighborGraph(root, DemoMotion) {
         },
       });
       setupCameraMotion(renderer.getCamera());
+      releaseInput = scopeGraphInput(renderer, el("neighbor-graph"));
+      ringView = "";
       rings = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       rings.setAttribute("aria-hidden", "true");
       rings.style.cssText =
@@ -489,6 +502,7 @@ export function createNeighborGraph(root, DemoMotion) {
       requests.abort();
       cancelTransition?.();
       spacing?.destroy();
+      releaseInput?.();
       renderer?.kill();
       renderer = null;
       rings?.remove();

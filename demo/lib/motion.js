@@ -31,66 +31,102 @@ export function setupCameraMotion(camera) {
     );
 }
 
-export function createPageMotion(root) {
+export function createPageMotion(root, { layoutElements = () => [] } = {}) {
   const removers = [];
   const activeAnimations = new Set();
   const animations = new WeakMap();
-  function update(element, mutate) {
-    const before = element.getBoundingClientRect();
-    const oldStyle = getComputedStyle(element);
-    const oldMarginTop = element.hidden ? "0px" : oldStyle.marginTop;
-    const oldMarginBottom = element.hidden ? "0px" : oldStyle.marginBottom;
-    const oldOpacity =
-      element.hidden || !before.height ? 0 : Number(oldStyle.opacity);
+  const layoutAnimations = new WeakMap();
+  let changingLayout = false;
+  let pendingReveals = [];
+
+  function layout(mutate) {
+    // A mode switch can close another dropdown and hide the preview. Measure
+    // that whole synchronous operation together, not each nested change.
+    if (changingLayout) return mutate();
+    const elements = [...new Set(layoutElements())].filter(Boolean);
+    const reduced = reducedMotion();
+    const measure = () =>
+      elements.map((element) => element.getBoundingClientRect());
+    // Capture the current visual position before cancelling an interrupted FLIP.
+    const before = reduced ? [] : measure();
+    elements.forEach((element) => layoutAnimations.get(element)?.cancel());
+    changingLayout = true;
+    let result;
+    try {
+      result = mutate();
+    } finally {
+      changingLayout = false;
+      const after = reduced ? [] : measure();
+      elements.forEach((element, index) => {
+        const first = before[index],
+          last = after[index];
+        if (!first?.height || !last?.height || !element.animate) return;
+        const x = first.left - last.left,
+          y = first.top - last.top;
+        if (Math.abs(x) < 0.5 && Math.abs(y) < 0.5) return;
+        // Individual translate composes with hover transforms and the content
+        // reveal. No height, margin, or per-frame measurements are involved.
+        const animation = element.animate(
+          [{ translate: `${x}px ${y}px` }, { translate: "0px 0px" }],
+          { duration: MOTION_MS, easing: EASE_OUT_BACK },
+        );
+        layoutAnimations.set(element, animation);
+        activeAnimations.add(animation);
+        animation.onfinish = animation.oncancel = () => {
+          if (layoutAnimations.get(element) === animation)
+            layoutAnimations.delete(element);
+          activeAnimations.delete(animation);
+        };
+      });
+      const reveals = pendingReveals;
+      pendingReveals = [];
+      reveals.forEach((reveal) => reveal());
+    }
+    return result;
+  }
+  function cancel(element) {
     animations.get(element)?.cancel();
-    element.style.overflow = "";
-    mutate();
-    const hidden = element.hidden;
-    const after = element.getBoundingClientRect();
-    const nextStyle = getComputedStyle(element);
-    const targetTop = hidden ? "0px" : nextStyle.marginTop;
-    const targetBottom = hidden ? "0px" : nextStyle.marginBottom;
-    if (
-      reducedMotion() ||
-      !element.animate ||
-      (!before.height && !after.height)
-    )
-      return Promise.resolve();
-    element.hidden = false;
-    element.style.overflow = "hidden";
+  }
+  function reveal(element, clip = false) {
+    if (changingLayout)
+      return new Promise((resolve) => {
+        pendingReveals.push(() => resolve(reveal(element, clip)));
+      });
+    cancel(element);
+    if (reducedMotion() || !element.animate) return Promise.resolve();
     return new Promise((resolve) => {
       const animation = element.animate(
         [
           {
-            height: `${before.height}px`,
-            marginTop: oldMarginTop,
-            marginBottom: oldMarginBottom,
-            opacity: oldOpacity,
-            transform: oldOpacity ? "translateY(0)" : "translateY(-6px)",
+            opacity: 0,
+            transform: clip ? "translateY(-18px)" : "translateY(-6px)",
+            ...(clip ? { clipPath: "inset(0 0 100% 0)" } : {}),
           },
           {
-            height: `${after.height}px`,
-            marginTop: targetTop,
-            marginBottom: targetBottom,
-            opacity: hidden || !after.height ? 0 : 1,
-            transform: hidden ? "translateY(-6px)" : "translateY(0)",
+            opacity: 1,
+            transform: "translateY(0)",
+            ...(clip ? { clipPath: "inset(0 0 0% 0)" } : {}),
           },
         ],
         { duration: MOTION_MS, easing: EASE_OUT_BACK },
       );
       animations.set(element, animation);
       activeAnimations.add(animation);
-      animation.onfinish = () => {
-        element.hidden = hidden;
-        element.style.overflow = "";
-        animations.delete(element);
+      const finish = () => {
+        if (animations.get(element) === animation) animations.delete(element);
         activeAnimations.delete(animation);
         resolve();
       };
-      animation.oncancel = () => {
-        activeAnimations.delete(animation);
-        resolve();
-      };
+      animation.onfinish = animation.oncancel = finish;
+    });
+  }
+  function update(element, mutate) {
+    // Commit layout once. Only opacity/transform change during the animation;
+    // hiding takes effect immediately, including keyboard/accessibility state.
+    return layout(() => {
+      cancel(element);
+      mutate();
+      return element.hidden ? Promise.resolve() : reveal(element);
     });
   }
   function setText(element, text) {
@@ -99,38 +135,20 @@ export function createPageMotion(root) {
       element.textContent = text;
     });
   }
-  const isOpen = (element) =>
-    element.open && element.dataset.closing !== "true";
+  const isOpen = (element) => element.open;
   function setOpen(element, open) {
     if (isOpen(element) === open) return;
-    const height = element.getBoundingClientRect().height;
-    animations.get(element)?.cancel();
-    element.dataset.closing = String(!open);
-    element.open = true;
-    const target = open
-      ? element.scrollHeight
-      : element.querySelector("summary").getBoundingClientRect().height;
-    element.dispatchEvent(new CustomEvent("detailschange"));
-    const finish = () => {
+    return layout(() => {
+      const content = [...element.children].filter(
+        (child) => child.tagName !== "SUMMARY",
+      );
+      content.forEach(cancel);
       element.open = open;
-      delete element.dataset.closing;
-      element.style.overflow = "";
-      activeAnimations.delete(animations.get(element));
-      animations.delete(element);
-    };
-    if (reducedMotion() || !element.animate) {
-      finish();
-      return;
-    }
-    element.style.overflow = "hidden";
-    const animation = element.animate(
-      [{ height: `${height}px` }, { height: `${target}px` }],
-      { duration: MOTION_MS, easing: EASE_OUT_BACK },
-    );
-    animations.set(element, animation);
-    activeAnimations.add(animation);
-    animation.onfinish = finish;
-    animation.oncancel = () => activeAnimations.delete(animation);
+      element.dispatchEvent(new CustomEvent("detailschange"));
+      // Reveal from the top with an overshooting translation for the bounce.
+      // The clip changes visual coverage, never the content's layout dimensions.
+      if (element.open) content.forEach((child) => reveal(child, true));
+    });
   }
   root.querySelectorAll("details").forEach((element) => {
     const summary = element.querySelector("summary");
@@ -142,6 +160,7 @@ export function createPageMotion(root) {
     removers.push(() => summary.removeEventListener("click", toggle));
   });
   return {
+    layout,
     setOpen,
     isOpen,
     reducedMotion,

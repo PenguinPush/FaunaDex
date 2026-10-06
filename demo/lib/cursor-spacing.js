@@ -14,6 +14,7 @@ export function createCursorSpacing(
   let enabled = !preference.matches,
     pointer = null,
     frame = 0,
+    aimFrame = 0,
     lastFrame = 0,
     destroyed = false;
   let goals = new Map();
@@ -92,12 +93,15 @@ export function createCursorSpacing(
     if (offsets.size) wake();
   }
   function reset() {
+    const changed = offsets.size > 0;
     pointer = null;
     goals.clear();
     offsets.clear();
     cancelAnimationFrame(frame);
+    cancelAnimationFrame(aimFrame);
+    aimFrame = 0;
     frame = 0;
-    apply();
+    if (changed) apply();
   }
   function move(event) {
     if (event.buttons) {
@@ -107,16 +111,17 @@ export function createCursorSpacing(
     if (!enabled || event.pointerType === "touch") return;
     const box = container.getBoundingClientRect();
     pointer = { x: event.clientX - box.left, y: event.clientY - box.top };
-    aim();
+    if (!aimFrame)
+      aimFrame = requestAnimationFrame(() => {
+        aimFrame = 0;
+        aim();
+      });
   }
   function pause() {
-    pointer = null;
-    cancelAnimationFrame(frame);
-    frame = 0;
+    reset();
   }
   function leave() {
-    pointer = null;
-    aim();
+    reset();
   }
   function preferenceChanged() {
     enabled = !preference.matches;

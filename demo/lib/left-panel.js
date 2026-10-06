@@ -2,7 +2,19 @@ import { createPageMotion } from "./motion";
 
 export function createLeftPanel(root, { onSearch, onStatus }) {
   const $ = (id) => root.querySelector(`#${id}`);
-  const motion = createPageMotion(root);
+  const motion = createPageMotion(root, {
+    // Non-overlapping blocks avoid applying the same displacement twice to
+    // nested elements. The graph and footer also move on the stacked layout.
+    layoutElements: () => [
+      $("preview"),
+      $("upload-option"),
+      $("text-option"),
+      $("search-button"),
+      root.querySelector(":scope > p"),
+      root.nextElementSibling,
+      root.parentElement?.nextElementSibling,
+    ],
+  });
   let previewUrl,
     selectedDemo = null,
     disposed = false;
@@ -13,10 +25,13 @@ export function createLeftPanel(root, { onSearch, onStatus }) {
       : "Identify animal";
   }
   function showPreview() {
-    return motion.update($("preview"), () => {
-      $("preview").hidden =
-        motion.isOpen($("text-option")) ||
-        !(selectedDemo || $("image").files[0]);
+    const preview = $("preview");
+    const hidden =
+      motion.isOpen($("text-option")) || !(selectedDemo || $("image").files[0]);
+    // Mode changes and image load events can request the same state repeatedly.
+    if (preview.hidden === hidden) return Promise.resolve();
+    return motion.update(preview, () => {
+      preview.hidden = hidden;
     });
   }
   function textChanged() {
@@ -68,10 +83,7 @@ export function createLeftPanel(root, { onSearch, onStatus }) {
       previewUrl = null;
     }
     const file = $("image").files[0];
-    if (!file)
-      motion.update($("preview"), () => {
-        $("preview").hidden = true;
-      });
+    if (!file) showPreview();
     else {
       previewUrl = URL.createObjectURL(file);
       $("preview").src = previewUrl;
@@ -102,8 +114,8 @@ export function createLeftPanel(root, { onSearch, onStatus }) {
     }
   }
   return {
-    selectDemo,
-    upload,
+    selectDemo: (button) => motion.layout(() => selectDemo(button)),
+    upload: () => motion.layout(upload),
     showPreview,
     submit,
     example() {
