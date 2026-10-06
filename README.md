@@ -1,1 +1,1 @@
-# [🐈  try the demo here !](https://faunadex.andrewd.ai/)
+# [try the demo here !](https://faunadex.andrewd.ai/)
