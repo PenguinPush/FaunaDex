@@ -2,18 +2,21 @@ FaunaDex on Railway
 ==================
 
 Deploy TWO services from this repository in the SAME Railway project/environment.
-These configurations deploy demo/ and backend/demo/app.py (the API used by the
+These Dockerfiles deploy demo/ and backend/demo/app.py (the API used by the
 demo), not the older frontend/ and backend/app/app.py application.
 
-For BOTH services, leave Root Directory at the repository root (/). Set the
-Config File path explicitly as below. The Dockerfiles use root-relative COPY
-paths. Leave build/start command overrides empty; the Dockerfiles supply them.
+For BOTH services, leave Root Directory at the repository root (/). Leave the
+Railway Config File field empty: Config as Code is deprecated and unavailable
+for new services. Configure these services in the dashboard instead.
+The Dockerfiles use root-relative COPY paths. Leave build/start command
+overrides empty; the Dockerfiles supply them. Set Healthcheck Path to /healthz,
+Healthcheck Timeout to 120 seconds, and Restart Policy to On Failure (5 retries).
 
 1. Backend service (name it backend)
 
-   Config File: /backend/railway.json
    Add a persistent volume mounted at /data (at least 1 GB).
    Variables:
+     RAILWAY_DOCKERFILE_PATH=backend/Dockerfile
      PORT=8080
      EMBEDDING_STORE_PATH=/data/animals.sqlite3
      OPENAI_API_KEY=<your OpenAI key>
@@ -56,8 +59,8 @@ paths. Leave build/start command overrides empty; the Dockerfiles supply them.
 
 3. Demo service (name it demo)
 
-   Config File: /demo/railway.json
    Variables, set BEFORE the first build:
+     RAILWAY_DOCKERFILE_PATH=demo/Dockerfile
      PORT=3000
      BACKEND_URL=http://${{backend.RAILWAY_PRIVATE_DOMAIN}}:8080
 
@@ -91,6 +94,6 @@ at demo runtime. The browser only needs the demo's published port.
 
 Railway reference documentation:
 https://docs.railway.com/builds/dockerfiles
-https://docs.railway.com/config-as-code/reference
+https://docs.railway.com/infrastructure-as-code
 https://docs.railway.com/networking/private-networking
 https://docs.railway.com/volumes
