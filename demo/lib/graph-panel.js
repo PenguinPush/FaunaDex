@@ -32,7 +32,7 @@ export function createGraphPanel(root) {
   return {
     status,
     async search(body, mode) {
-      status(body.has("demo") ? "Searching cached demo…" : "Finding matches…");
+      status("Finding matches…");
       motion.update($("results"), () => {
         $("results").hidden = true;
       });
@@ -52,9 +52,7 @@ export function createGraphPanel(root) {
         });
         await controller.set(data.graph, 10, data.map_query);
         await appearance;
-        await status(
-          data.cached ? "Using cached demo description and embedding." : "",
-        );
+        await status("");
         if (!disposed && window.matchMedia("(max-width: 1023px)").matches) {
           scrollFrame = requestAnimationFrame(() => {
             if (!disposed)

@@ -57,7 +57,7 @@ export function createLeftPanel(root, { onSearch, onStatus }) {
     $("preview").src = selectedDemo;
     $("preview").alt = button.dataset.name + " demo photo";
     if ($("preview").complete) showPreview();
-    onStatus("Demo photo selected. Choose Identify animal.");
+    onStatus("Photo selected. Choose Identify animal.");
   }
   function upload() {
     useImageInput();
@@ -75,6 +75,7 @@ export function createLeftPanel(root, { onSearch, onStatus }) {
     else {
       previewUrl = URL.createObjectURL(file);
       $("preview").src = previewUrl;
+      onStatus("Photo selected. Choose Identify animal.");
     }
   }
   async function submit(event) {
@@ -84,7 +85,7 @@ export function createLeftPanel(root, { onSearch, onStatus }) {
     const file = $("image").files[0];
     if (mode === "image") {
       if (!file && !selectedDemo)
-        return onStatus("Upload an image or select a demo photo first.", true);
+        return onStatus("Upload or select a photo first.", true);
       if (file && file.size > 10 * 1024 * 1024)
         return onStatus("Choose an image smaller than 10 MB.", true);
     } else if (!$("description").value.trim())
