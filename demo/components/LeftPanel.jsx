@@ -353,7 +353,7 @@ export default function LeftPanel({ onSearch, onStatus }) {
                 id="description"
                 maxLength="4000"
                 rows="5"
-                placeholder="deer; branched antlers with main beams curving forward and unbranched tines pointing upwards; tan to grayish-brown body coat; white patch on the throat; white band across the muzzle behind a black nose; white rings surrounding the eyes; white fur on the inner side of the legs"
+                placeholder="describe an animal and it's features, be descriptive! for best results, identify details of it's features like fur, skin, limbs, etc."
                 className="min-h-[120px] resize-y w-full bg-white p-3 placeholder:text-neutral-400 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#3472ac] transition-[transform,background-color,border-color,box-shadow,color,opacity,outline-color] duration-300 ease-out-back motion-reduce:transition-none text-xs leading-relaxed rounded-none border-0"
               ></textarea>
               <button
@@ -372,7 +372,7 @@ export default function LeftPanel({ onSearch, onStatus }) {
           id="search-button"
           type="submit"
         >
-          <span id="search-button-label">Identify animal</span>
+          <span id="search-button-label">Identify Animal</span>
           <span aria-hidden="true">→</span>
         </button>
       </form>

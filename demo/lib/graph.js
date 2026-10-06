@@ -242,10 +242,14 @@ export function createNeighborGraph(root, DemoMotion) {
     selected = id;
     const requestRevision = ++revision;
     refresh();
-    DemoMotion.update(el("graph-selection"), () => {
-      el("graph-selection").hidden = false;
-      el("graph-node-name").textContent = graph.getNodeAttribute(id, "label");
-    });
+    DemoMotion.update(
+      el("graph-node-name"),
+      () => {
+        el("graph-selection").hidden = false;
+        el("graph-node-name").textContent = graph.getNodeAttribute(id, "label");
+      },
+      { bounce: true },
+    );
     DemoMotion.update(el("graph-neighbors"), () =>
       el("graph-neighbors").replaceChildren(),
     );

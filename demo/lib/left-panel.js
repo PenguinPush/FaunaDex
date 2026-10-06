@@ -22,7 +22,7 @@ export function createLeftPanel(root, { onSearch, onStatus }) {
   function updateInputMode() {
     $("search-button-label").textContent = motion.isOpen($("text-option"))
       ? "Find matches"
-      : "Identify animal";
+      : "Identify Animal";
   }
   function showPreview() {
     const preview = $("preview");
@@ -119,7 +119,8 @@ export function createLeftPanel(root, { onSearch, onStatus }) {
     showPreview,
     submit,
     example() {
-      $("description").value = $("description").placeholder;
+      $("description").value =
+        "deer; branched antlers with main beams curving forward and unbranched tines pointing upwards; tan to grayish-brown body coat; white patch on the throat; white band across the muzzle behind a black nose; white rings surrounding the eyes; white fur on the inner side of the legs";
       $("description").focus();
     },
     destroy() {

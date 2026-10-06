@@ -42,14 +42,18 @@ export function createGraphPanel(root) {
         controller.beginSearch();
         const data = await api("/api/search", { method: "POST", body });
         if (disposed) return;
-        const appearance = motion.update($("results"), () => {
-          $("results").hidden = false;
-          $("query-label").textContent =
-            mode === "image" ? "VISIBLE FEATURES" : "SEARCH TEXT";
-          $("query-text").textContent = data.query;
-          $("best-match").textContent =
-            data.matches[0]?.name || "No animal found";
-        });
+        const appearance = motion.update(
+          $("results"),
+          () => {
+            $("results").hidden = false;
+            $("query-label").textContent =
+              mode === "image" ? "Visible Features" : "Given Description";
+            $("query-text").textContent = data.query;
+            $("best-match").textContent =
+              data.matches[0]?.name || "No animal found";
+          },
+          { bounce: true },
+        );
         await controller.set(data.graph, 10, data.map_query);
         await appearance;
         await status("");

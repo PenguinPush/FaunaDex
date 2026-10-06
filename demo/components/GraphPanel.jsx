@@ -32,8 +32,8 @@ const GraphPanel = forwardRef(function GraphPanel(_, ref) {
         hidden
       >
         <div>
-          <p className="text-[10px] font-bold tracking-[1.7px] text-neutral-500 leading-relaxed">
-            CLOSEST MATCH
+          <p className="text-[10px] text-neutral-500 leading-relaxed">
+            Closest Match
           </p>
           <h3
             id="best-match"
@@ -44,9 +44,9 @@ const GraphPanel = forwardRef(function GraphPanel(_, ref) {
         <div className="mt-2 wrap-anywhere lg:mt-0 bg-[#eff5fa] py-3 px-3.5">
           <p
             id="query-label"
-            className="text-[10px] font-bold tracking-[1.7px] text-neutral-500 leading-relaxed"
+            className="text-[10px] text-neutral-500 leading-relaxed"
           >
-            VISIBLE FEATURES
+            Visible Features
           </p>
           <p
             id="query-text"
@@ -81,9 +81,9 @@ const GraphPanel = forwardRef(function GraphPanel(_, ref) {
               <button
                 type="submit"
                 id="add-button"
-                className="cursor-pointer px-4 py-2.5 disabled:cursor-wait disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#3472ac] transition-[transform,background-color,border-color,box-shadow,color,opacity,outline-color] duration-300 ease-out-back motion-reduce:transition-none font-semibold shadow-[0_2px_0_#dce1e3] origin-center motion-safe:[@media(hover:hover)_and_(pointer:fine)]:enabled:hover:[transform:scale(1.05,0.95)] motion-safe:enabled:active:[transform:scale(1.1,0.9)] text-[#245e8b] bg-[#eff5fa] hover:bg-[#eff5fa] rounded-none"
+                className="cursor-pointer px-4 py-2.5 disabled:cursor-wait disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#3472ac] transition-[transform,background-color,border-color,box-shadow,color,opacity,outline-color] duration-300 ease-out-back motion-reduce:transition-none font-semibold shadow-none origin-center motion-safe:[@media(hover:hover)_and_(pointer:fine)]:enabled:hover:[transform:scale(1.05,0.95)] motion-safe:enabled:active:[transform:scale(1.1,0.9)] text-[#245e8b] bg-[#eff5fa] hover:bg-[#eff5fa] rounded-none"
               >
-                Add +
+                +
               </button>
             </div>
             <p
@@ -165,7 +165,7 @@ const GraphPanel = forwardRef(function GraphPanel(_, ref) {
               <button
                 id="graph-find-button"
                 type="button"
-                className="cursor-pointer px-4 py-2.5 disabled:cursor-wait disabled:opacity-50 text-xs focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#3472ac] transition-[transform,background-color,border-color,box-shadow,color,opacity,outline-color] duration-300 ease-out-back motion-reduce:transition-none font-semibold shadow-[0_2px_0_#dce1e3] origin-center motion-safe:[@media(hover:hover)_and_(pointer:fine)]:enabled:hover:[transform:scale(1.05,0.95)] motion-safe:enabled:active:[transform:scale(1.1,0.9)] text-[#245e8b] bg-[#eff5fa] hover:bg-[#eff5fa] rounded-none"
+                className="cursor-pointer px-4 py-2.5 disabled:cursor-wait disabled:opacity-50 text-xs focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#3472ac] transition-[transform,background-color,border-color,box-shadow,color,opacity,outline-color] duration-300 ease-out-back motion-reduce:transition-none font-semibold shadow-none origin-center motion-safe:[@media(hover:hover)_and_(pointer:fine)]:enabled:hover:[transform:scale(1.05,0.95)] motion-safe:enabled:active:[transform:scale(1.1,0.9)] text-[#245e8b] bg-[#eff5fa] hover:bg-[#eff5fa] rounded-none"
               >
                 Find
               </button>

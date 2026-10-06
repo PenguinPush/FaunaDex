@@ -87,10 +87,10 @@ export function createPageMotion(root, { layoutElements = () => [] } = {}) {
   function cancel(element) {
     animations.get(element)?.cancel();
   }
-  function reveal(element, clip = false) {
+  function reveal(element, clip = false, bounce = false) {
     if (changingLayout)
       return new Promise((resolve) => {
-        pendingReveals.push(() => resolve(reveal(element, clip)));
+        pendingReveals.push(() => resolve(reveal(element, clip, bounce)));
       });
     cancel(element);
     if (reducedMotion() || !element.animate) return Promise.resolve();
@@ -98,12 +98,13 @@ export function createPageMotion(root, { layoutElements = () => [] } = {}) {
       const animation = element.animate(
         [
           {
-            opacity: 0,
-            transform: clip ? "translateY(-18px)" : "translateY(-6px)",
+            ...(bounce ? {} : { opacity: 0 }),
+            transform:
+              clip || bounce ? "translateY(-18px)" : "translateY(-6px)",
             ...(clip ? { clipPath: "inset(0 0 100% 0)" } : {}),
           },
           {
-            opacity: 1,
+            ...(bounce ? {} : { opacity: 1 }),
             transform: "translateY(0)",
             ...(clip ? { clipPath: "inset(0 0 0% 0)" } : {}),
           },
@@ -120,13 +121,13 @@ export function createPageMotion(root, { layoutElements = () => [] } = {}) {
       animation.onfinish = animation.oncancel = finish;
     });
   }
-  function update(element, mutate) {
+  function update(element, mutate, { clip = false, bounce = false } = {}) {
     // Commit layout once. Only opacity/transform change during the animation;
     // hiding takes effect immediately, including keyboard/accessibility state.
     return layout(() => {
       cancel(element);
       mutate();
-      return element.hidden ? Promise.resolve() : reveal(element);
+      return element.hidden ? Promise.resolve() : reveal(element, clip, bounce);
     });
   }
   function setText(element, text) {
