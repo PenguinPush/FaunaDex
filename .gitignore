@@ -32,3 +32,11 @@ __pycache__
 /uploads/
 /saves/
 /backend/faunadex-102c91137627.json
+/backend/embeds/*.sqlite3
+/backend/embeds/*.sqlite3-*
+
+/demo/.next/
+/demo/out/
+/demo/tests
+/backend/tests
+AGENTS.md

@@ -1,0 +1,26 @@
+{
+  "name": "faunadex-demo",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "format": "prettier --write \"app/**/*.{js,jsx,css}\" \"components/**/*.jsx\" \"lib/*.js\" \"*.mjs\" \"tests/*.mjs\" package.json",
+    "format:check": "prettier --check \"app/**/*.{js,jsx,css}\" \"components/**/*.jsx\" \"lib/*.js\" \"*.mjs\" \"tests/*.mjs\" package.json",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "prettier": "3.9.9",
+    "tailwindcss": "4.3.0"
+  },
+  "dependencies": {
+    "@2toad/profanity": "3.3.0",
+    "graphology": "^0.26.0",
+    "next": "16.3.8",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "sigma": "^3.0.3"
+  },
+  "type": "module"
+}

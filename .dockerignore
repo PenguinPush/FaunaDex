@@ -1,0 +1,17 @@
+.git
+.idea
+.agents
+.codex
+.venv
+**/node_modules
+**/.next
+**/__pycache__
+**/.env
+**/.env.*
+**/*.sqlite3
+**/*.sqlite3-*
+**/*.log
+backend/faunadex-*.json
+uploads
+saves
+frontend

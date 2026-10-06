@@ -1,71 +1,134 @@
-from openai import OpenAI
-import pandas as pd
-from datasets import load_dataset
-from annoy import AnnoyIndex
+import logging
 import warnings
+from time import perf_counter
+
+import numpy as np
+import pandas as pd
 from dotenv import load_dotenv
-import os
-# Import the image recognizer class
-from image_recognizer import ImageRecognizer
+
+from backend.app.embedding_store import (
+    DEFAULT_STORE_PATH,
+    AnimalEmbeddingStore,
+    create_embedding_client,
+)
+from backend.app.image_recognizer import ImageRecognizer
 
 load_dotenv()
+logger = logging.getLogger(__name__)
 
-OpenAI.api_key = os.environ.get("OPENAI_API_KEY")
-OpenAI.organization = os.environ.get("OPENAI_ORG")
 
 DISTANCE_CUTOFF = 1.1
 
-warnings.filterwarnings('ignore')
-pd.set_option('display.max_colwidth', None)
-pd.set_option('display.max_columns', None)
-pd.set_option('display.width', None)
+warnings.filterwarnings("ignore")
+pd.set_option("display.max_colwidth", None)
+pd.set_option("display.max_columns", None)
+pd.set_option("display.width", None)
 
 
 class SemanticSearch:
-    def __init__(self, dataset_name="PenguinPush/animals-large", split="train",
-                 dataset_limit=3159, annoy_index_path='backend/embeds/embeds-openai-large-gen3.ann'):
-        dataset = load_dataset(dataset_name, split=split)
-        self.df = pd.DataFrame(dataset)[:dataset_limit]
+    def __init__(
+        self, store_path=DEFAULT_STORE_PATH, dataset_limit=None, recognizer=None
+    ):
+        self.store = AnimalEmbeddingStore(store_path)
+        self.dataset_limit = dataset_limit
+        self.reload_embeddings()
+        self.recognizer = recognizer
+        self.last_query_vector = None
 
-        self.index = AnnoyIndex(3072, 'angular')
-        self.index.load(annoy_index_path)
-
-        self.recognizer = ImageRecognizer()
+    def reload_embeddings(self):
+        """Load committed additions without restarting this search instance."""
+        started = perf_counter()
+        ids, names, embeddings = self.store.snapshot(self.dataset_limit)
+        normalized = embeddings / np.linalg.norm(embeddings, axis=1)[:, None]
+        self.df = pd.DataFrame({"animals": names}, index=ids)
+        self.embeddings = normalized
+        logger.info(
+            "Loaded %s animal vectors in %.3fs", len(names), perf_counter() - started
+        )
 
     def get_embedding(self, query: str):
-        client = OpenAI()
-
-        openai_output = client.embeddings.create(
-            input=query,
-            model="text-embedding-3-large"
-        )
-        return openai_output.data[0].embedding
+        started = perf_counter()
+        logger.info("OpenAI embedding request starting")
+        try:
+            with create_embedding_client() as client:
+                output = client.embeddings.create(
+                    input=query,
+                    model=self.store.model,
+                    dimensions=self.store.dimensions,
+                )
+            return output.data[0].embedding
+        finally:
+            logger.info(
+                "OpenAI embedding stage finished in %.3fs", perf_counter() - started
+            )
 
     def classify_image(self, image_path: str, n_neighbors: int = 10):
+        if n_neighbors < 1:
+            raise ValueError("n_neighbors must be positive.")
+        if self.recognizer is None:
+            self.recognizer = ImageRecognizer()
         labels = self.recognizer.get_labels(image_path)
+        if not labels:
+            return (
+                "Not an animal",
+                pd.DataFrame(columns=["animals", "distance"]),
+                ([], []),
+            )
 
-        query = ' '.join(labels) if labels else "Not an animal"
+        query = "; ".join(labels)
         print(f"Using image-derived query: '{query}'")
 
+        return self.search_text(query, n_neighbors)
+
+    def search_text(self, query: str, n_neighbors: int = 10):
+        if not isinstance(query, str) or not query.strip():
+            raise ValueError("Enter a nonempty text description.")
+        if n_neighbors < 1:
+            raise ValueError("n_neighbors must be positive.")
+        query = query.strip()
         query_embed = self.get_embedding(query)
+        return self.search_embedding(query_embed, query, n_neighbors)
 
-        similar_item_ids = self.index.get_nns_by_vector(query_embed, n_neighbors, include_distances=True)
+    def search_embedding(self, query_embed, query="", n_neighbors=10):
+        """Rank a saved query vector against the current collection without API calls."""
+        if n_neighbors < 1:
+            raise ValueError("n_neighbors must be positive.")
+        started = perf_counter()
+        query_vector = np.asarray(query_embed, dtype=np.float32)
+        query_norm = np.linalg.norm(query_vector)
+        if (
+            query_vector.shape != (self.embeddings.shape[1],)
+            or not np.isfinite(query_vector).all()
+            or query_norm == 0
+        ):
+            raise ValueError(
+                "The query embedding must be a finite, nonzero vector of matching dimensions."
+            )
+        self.last_query_vector = query_vector / query_norm
+        similarities = self.embeddings @ self.last_query_vector
+        ids = np.argsort(-similarities)[:n_neighbors]
+        distances = np.sqrt(np.maximum(0, 2 - 2 * np.clip(similarities[ids], -1, 1)))
+        similar_item_ids = (ids.tolist(), distances.tolist())
 
-        results = pd.DataFrame({
-            'animals': self.df.iloc[similar_item_ids[0]]['animals'],
-            'distance': similar_item_ids[1]
-        })
+        results = pd.DataFrame(
+            {
+                "animals": self.df.iloc[similar_item_ids[0]]["animals"],
+                "distance": similar_item_ids[1],
+            }
+        )
 
+        logger.info("Local ranking finished in %.3fs", perf_counter() - started)
         return query, results, similar_item_ids
 
     def select_result(self, similar_item_ids, selection: int):
-        selected_id = similar_item_ids[0][selection - 1]  # adjusting for zero-based indexing
-        return self.df.iloc[selected_id]['animals']
+        selected_id = similar_item_ids[0][selection - 1]
+        return self.df.iloc[selected_id]["animals"]
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     classifier = SemanticSearch()
-    image_path = 'C:/Users/icyzm/Downloads/testbird.jpeg'  # Update this path as needed
+    image_path = "/Users/andrewdai/Downloads/scarlet-tanager.jpeg"
     query, results, similar_item_ids = classifier.classify_image(image_path)
 
     print(f"\nQuery: '{query}'\nNearest neighbors:")

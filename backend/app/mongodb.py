@@ -1,14 +1,19 @@
-from pymongo import MongoClient
-from datetime import datetime
 import os
-from dotenv import load_dotenv
+from datetime import datetime
 from json import loads
+
+from dotenv import load_dotenv
+from pymongo import MongoClient
 
 load_dotenv()
 
 db_password = os.environ.get("MONGODB_PASSWORD")
-mongo_url = "mongodb+srv://mongoauth:" + db_password + "@cluster0.6lsnmgv.mongodb.net/?retryWrites=true&w=majority" \
-                                                       "&appName=Cluster0 "
+mongo_url = (
+    "mongodb+srv://mongoauth:"
+    + db_password
+    + "@cluster0.6lsnmgv.mongodb.net/?retryWrites=true&w=majority"
+    "&appName=Cluster0 "
+)
 
 client = MongoClient(mongo_url)
 db = client["fauna"]
@@ -24,8 +29,10 @@ def database_update(animal_instance, image_path):
         if existing_animal:
             collection.update_one(
                 {"_id": existing_animal["_id"]},
-                {"$inc": {"times_caught": 1},
-                 "$set": {"image_path": image_path, "image_path_nobg": image_path}}
+                {
+                    "$inc": {"times_caught": 1},
+                    "$set": {"image_path": image_path, "image_path_nobg": image_path},
+                },
             )
         else:
             is_new = True
@@ -38,7 +45,7 @@ def database_update(animal_instance, image_path):
                 "first_caught_time": int(datetime.utcnow().timestamp()),
                 "first_caught_city": "Oakville",
                 "type_1": type_data["type_1"],
-                "type_2": type_data["type_2"]
+                "type_2": type_data["type_2"],
             }
             collection.insert_one(new_animal)
 
@@ -59,4 +66,3 @@ def database_fetch():
         return {"status": "success", "data": fauna_data}
     except Exception as e:
         return {"status": "error", "message": str(e)}
-

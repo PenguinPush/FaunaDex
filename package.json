@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "db:reset": "cp backend/embeds/animals-backup.sqlite3 backend/embeds/animals.sqlite3"
+  },
+  "dependencies": {
+    "stylelint": "^17.16.0"
+  }
+}

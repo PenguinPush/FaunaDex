@@ -1,9 +1,10 @@
+import os
+
+import openai
 from dotenv import load_dotenv
 from openai import OpenAI
-from semantic_search import SemanticSearch
-import requests
-import openai
-import os
+
+from backend.app.semantic_search import SemanticSearch
 
 load_dotenv()
 OpenAI.api_key = os.environ.get("OPENAI_API_KEY")
@@ -24,9 +25,12 @@ class Animal:
         classifier = SemanticSearch()
 
         query, results, similar_item_ids = classifier.classify_image(self.image_path)
-        print("distance: ", similar_item_ids[1][0])
-        if (results is not None and not results.empty) and similar_item_ids[1][0] <= DISTANCE_CUTOFF:
-            self.species = results.iloc[0]['animals']
+        if similar_item_ids[1]:
+            print("distance: ", similar_item_ids[1][0])
+        if (results is not None and not results.empty) and similar_item_ids[1][
+            0
+        ] <= DISTANCE_CUTOFF:
+            self.species = results.iloc[0]["animals"]
         else:
             self.species = "NOT AN ANIMAL"
         print(f"Image processed. Derived species: {self.species}")
@@ -44,10 +48,7 @@ class Animal:
             client = OpenAI()
 
             response = client.responses.create(
-                model="gpt-4o",
-                input=prompt,
-                max_output_tokens=100,
-                temperature=1
+                model="gpt-4o", input=prompt, max_output_tokens=100, temperature=1
             )
             description = response.output_text.strip()
             return description
@@ -91,8 +92,8 @@ class Animal:
                                     "Dragon",
                                     "Dark",
                                     "Steel",
-                                    "Fairy"
-                                ]
+                                    "Fairy",
+                                ],
                             },
                             "type_2": {
                                 "type": "string",
@@ -115,16 +116,13 @@ class Animal:
                                     "Dragon",
                                     "Dark",
                                     "Steel",
-                                    "Fairy"
-                                ]
-                            }
+                                    "Fairy",
+                                ],
+                            },
                         },
                         "additionalProperties": False,
-                        "required": [
-                            "type_1",
-                            "type_2"
-                        ]
-                    }
+                        "required": ["type_1", "type_2"],
+                    },
                 }
             },
             reasoning={},
@@ -132,7 +130,7 @@ class Animal:
             temperature=1,
             max_output_tokens=50,
             top_p=1,
-            store=True
+            store=True,
         )
         return response.output_text
 
@@ -140,9 +138,8 @@ class Animal:
         return f"Animal(species={self.species}, image_path={self.image_path})"
 
 
-if __name__ == '__main__':
-    # Example usage:
-    test_image = '/Users/edwardwang/Downloads/john.webp'  # Update this path as needed
+if __name__ == "__main__":
+    test_image = "/Users/edwardwang/Downloads/john.webp"  # Update this path as needed
 
     animal_instance = Animal(test_image)
     print(animal_instance.species)

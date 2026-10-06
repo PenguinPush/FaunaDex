@@ -1,0 +1,101 @@
+@import "tailwindcss" source("../");
+
+@theme {
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --default-transition-duration: 300ms;
+  --default-transition-timing-function: var(--ease-out-back);
+  --font-sans: Nunito, "Segoe UI", sans-serif;
+  --color-dex-red: #9f1838;
+  --color-dex-ink: #243044;
+  --color-dex-line: #cbd2d7;
+  --font-pixel: "Pixelify Sans", ui-monospace, monospace;
+  --color-neutral-50: #f5f5f3;
+  --color-neutral-100: #eeefed;
+  --color-neutral-200: #d8dddf;
+  --color-neutral-300: #b9c2ca;
+  --color-neutral-400: #778491;
+  --color-neutral-500: #586775;
+  --color-neutral-600: #43546a;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #243044;
+  --color-neutral-900: #182537;
+  --animate-bounce-in-right: bounce-in-right 300ms var(--ease-out-back);
+  --animate-bounce-in-left: bounce-in-left 300ms var(--ease-out-back);
+  @keyframes bounce-in-right {
+    from {
+      transform: translateX(-20%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  @keyframes bounce-in-left {
+    from {
+      transform: translateX(20%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+}
+
+.color-wipe-link {
+  position: relative;
+  display: inline-block;
+  color: #425d78;
+  text-decoration: underline;
+}
+
+.color-wipe-link::before {
+  content: attr(data-hover-label);
+  position: absolute;
+  inset: 0 -2px;
+  text-align: center;
+  text-decoration: underline;
+  color: white;
+  background: var(--color-dex-red);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 300ms var(--ease-out-back);
+  pointer-events: none;
+}
+
+.color-wipe-link:is(:hover, :focus-visible)::before {
+  clip-path: inset(0);
+}
+
+.button-color-sweep {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.finder-panel .button-color-sweep {
+  background-color: #eff5fa;
+}
+
+.button-color-sweep::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 120%;
+  z-index: -1;
+  background: white;
+  transform: translateX(-110%) skewX(-25deg);
+  transition: transform 300ms var(--ease-out-back);
+  pointer-events: none;
+}
+
+.button-color-sweep:enabled:is(:hover, :focus-visible)::before {
+  transform: translateX(-12.5%) skewX(-25deg);
+}
+
+#search-button:enabled:is(:hover, :focus-visible) {
+  color: var(--color-dex-red);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .color-wipe-link::before,
+  .button-color-sweep::before {
+    transition: none;
+  }
+}

@@ -1,0 +1,96 @@
+FaunaDex on Railway
+==================
+
+Deploy TWO services from this repository in the SAME Railway project/environment.
+These configurations deploy demo/ and backend/demo/app.py (the API used by the
+demo), not the older frontend/ and backend/app/app.py application.
+
+For BOTH services, leave Root Directory at the repository root (/). Set the
+Config File path explicitly as below. The Dockerfiles use root-relative COPY
+paths. Leave build/start command overrides empty; the Dockerfiles supply them.
+
+1. Backend service (name it backend)
+
+   Config File: /backend/railway.json
+   Add a persistent volume mounted at /data (at least 1 GB).
+   Variables:
+     PORT=8080
+     EMBEDDING_STORE_PATH=/data/animals.sqlite3
+     OPENAI_API_KEY=<your OpenAI key>
+     GEMINI_API_KEY=<your Gemini key>
+   Optional:
+     OPENAI_ORG=<organization ID>
+     GEMINI_VISION_MODEL=<model override>
+     DEMO_URL=https://<your demo domain>
+
+   Keep one replica. The SQLite file, graph cache and addition lock are designed
+   for a single Gunicorn process; the container serves requests with 4 threads.
+   Leave public networking disabled. The demo proxies requests over Railway's
+   private network so /api/animals always passes through its profanity filter.
+   The API binds to [::]:PORT to support private IPv6 and IPv4 on Linux.
+
+   /healthz is a process health check; it intentionally works before database
+   import. It does not verify API keys or indicate that the collection is loaded.
+
+2. Import the existing collection once
+
+   The animal database is excluded from Git and Docker builds. A new volume
+   starts empty. From the repository root, export a consistent snapshot:
+
+     python3 deploy/export_database.py /tmp/faunadex-animals.sqlite3
+
+   This uses SQLite's backup API and does not regenerate embeddings or spend
+   provider credits. The destination must not already exist.
+
+   With the Railway CLI installed and authenticated, run railway link and
+   select this project's backend service/environment. Then upload the snapshot
+   to the volume (paths below are relative to the volume root):
+
+     railway volume files upload /tmp/faunadex-animals.sqlite3 /animals.sqlite3
+
+   Upload BEFORE exposing/using the demo, and restart the backend after upload.
+   Confirm /api/status returns a nonzero count through the demo once it is up.
+   Do not overwrite a live database: new user additions are stored on this
+   volume. Subsequent deployments reuse it without another import. Enable
+   Railway volume backups for those additions.
+
+3. Demo service (name it demo)
+
+   Config File: /demo/railway.json
+   Variables, set BEFORE the first build:
+     PORT=3000
+     BACKEND_URL=http://${{backend.RAILWAY_PRIVATE_DOMAIN}}:8080
+
+   The reference assumes the other service is named backend. Substitute its
+   actual name if different. Match the port if you change the backend PORT.
+   BACKEND_URL is used both at build time for Next.js rewrites and at runtime
+   for /api/animals. Rebuild the demo whenever this value changes.
+   No provider credentials belong in this service or in NEXT_PUBLIC_ variables.
+
+   Generate a public domain for demo, with target port 3000. No volume is needed.
+   The multi-stage image runs the Next.js standalone server as the node user
+   and includes the compiled static assets and public files.
+
+4. Verify
+
+   GET https://<demo-domain>/healthz -> {"status":"ok"}
+   GET https://<demo-domain>/api/status -> a nonzero animal count
+   Open the demo and try a bundled photo: this uses saved descriptions/vectors.
+   Try a text search (OpenAI), upload (Gemini + OpenAI), and animal addition
+   (OpenAI). Those operations require working provider credentials/billing.
+   Add an animal, redeploy the backend, and confirm the count persists.
+
+Local Docker builds, from the repository root:
+
+   docker build -f backend/Dockerfile -t faunadex-backend .
+   docker build -f demo/Dockerfile --build-arg BACKEND_URL=http://backend:8080 -t faunadex-demo .
+
+For local containers, use a shared Docker network with the backend named
+backend, mount your database directory at /data, and pass the same BACKEND_URL
+at demo runtime. The browser only needs the demo's published port.
+
+Railway reference documentation:
+https://docs.railway.com/builds/dockerfiles
+https://docs.railway.com/config-as-code/reference
+https://docs.railway.com/networking/private-networking
+https://docs.railway.com/volumes
