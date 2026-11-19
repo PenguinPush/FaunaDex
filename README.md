@@ -4,10 +4,6 @@
 
 ### semantic species retrieval on animal photos by matching visual descriptions with a vector search. currently supports 9,641 species, 4.7x more than Google SpeciesNet's 2,066.
 
-**[try the demo here !](https://faunadex.andrewd.ai/)**
-<br>
-**[visit the Hugging Face dataset !](https://huggingface.co/datasets/PenguinPush/animals-massive)**
-
 </div>
 
 <div align="center">
@@ -15,6 +11,11 @@
     <img src="images/demo.png" alt"demo.png" width="600"/>
 </div>
 </div>
+
+**[try the demo here !](https://faunadex.andrewd.ai/)**
+<br>
+**[visit the Hugging Face dataset !](https://huggingface.co/datasets/PenguinPush/animals-massive)**
+
 
 ### how it works
 
