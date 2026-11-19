@@ -2,7 +2,7 @@
 
 # FaunaDex
 
-### performs semantic species retrieval on animal photos by matching visual descriptions with a vector search.
+### semantic species retrieval on animal photos by matching visual descriptions with a vector search.
 
 **[try the demo here !](https://faunadex.andrewd.ai/)**
 <br>
