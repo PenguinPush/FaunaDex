@@ -12,9 +12,12 @@
 </div>
 </div>
 
+<div align="center">
+
 **[try the demo here !](https://faunadex.andrewd.ai/)**
 <br>
 **[visit the Hugging Face dataset !](https://huggingface.co/datasets/PenguinPush/animals-massive)**
+</div>
 
 
 ### how it works
