@@ -1,8 +1,46 @@
 import "./globals.css";
+import { site } from "../lib/site";
+
 export const metadata = {
-  title: "FaunaDex",
-  icons: { icon: "/static/dex-mark.png" },
+  metadataBase: new URL(site.url),
+  title: site.title,
+  description: site.description,
+  applicationName: "FaunaDex",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    siteName: "FaunaDex",
+    title: site.title,
+    description: site.description,
+    url: "/",
+    images: [
+      {
+        url: "/static/demo.png",
+        width: 3090,
+        height: 1282,
+        alt: "FaunaDex matching an Amano shrimp photo and exploring nearby animal embeddings",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.title,
+    description: site.description,
+    images: [
+      {
+        url: "/static/demo.png",
+        alt: "FaunaDex animal search and embedding map",
+      },
+    ],
+  },
+  icons: {
+    icon: { url: "/static/dex-mark.png", type: "image/png" },
+    apple: "/static/dex-mark.png",
+  },
 };
+
+export const viewport = { themeColor: "#edf0ef" };
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
