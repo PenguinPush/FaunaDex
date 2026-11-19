@@ -2,7 +2,7 @@
 
 # FaunaDex
 
-### semantic species retrieval on animal photos by matching visual descriptions with a vector search.
+### semantic species retrieval on animal photos by matching visual descriptions with a vector search. currently supports 9,641 species, 4.7x more than Google SpeciesNet's 2,066.
 
 **[try the demo here !](https://faunadex.andrewd.ai/)**
 <br>
